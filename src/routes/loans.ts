@@ -15,6 +15,6 @@ router.get ('/',                loanController.getLoans);
 router.get ('/:id',             loanController.getLoan);
 router.post('/',                loanController.postNewLoan)
 router.put ('/:id/payment',     loanController.putPayment);
-router.put ('/:id/disbursment', loanController.putDisburtment);
+router.put ('/:id/disbursement', loanController.putDisburtsement);
 
 export default router
