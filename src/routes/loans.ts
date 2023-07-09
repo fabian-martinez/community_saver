@@ -1,12 +1,20 @@
 import { Router } from 'express';
-import { getLoans, getLoansByBorrower, getLoan, postNewLoan, putPayment, putDisburtment } from '../controllers/loansController';
+import LoanController from '../controllers/loansController';
+import LoanService from '../services/loanService';
+import logger from '../services/loggerService';
 
 const router = Router();
 
-router.get ('/',                getLoans );
-router.get ('/:id',             getLoan);
-router.post('/',                postNewLoan)
-router.put ('/:id/payment',     putPayment);
-router.put ('/:id/disbursment', putDisburtment);
+const loanService = new LoanService()
+
+const loanController:LoanController = new LoanController(loanService)
+
+logger.debug(`Loan Controller Inicailizado ${loanController}`)
+
+router.get ('/',                loanController.getLoans);
+router.get ('/:id',             loanController.getLoan);
+router.post('/',                loanController.postNewLoan)
+router.put ('/:id/payment',     loanController.putPayment);
+router.put ('/:id/disbursment', loanController.putDisburtment);
 
 export default router

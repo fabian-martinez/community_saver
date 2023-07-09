@@ -3,7 +3,7 @@ import loansRouter from '../routes/loans';
 import cors from 'cors';
 import db from "../database/db";
 import { initModels } from "./initModels";
-import { Sequelize } from "sequelize";
+import logger from "../services/loggerService";
 
 class Server {
 
@@ -22,13 +22,14 @@ class Server {
 
 		this.middelwares();
 		this.routes();
+
 	}
 
 	async dbConnection() {
 		try {
 			await db.authenticate();
 			initModels(db)
-			console.log("Database Online");
+			logger.info("Database Online");
 		} catch (error) {
 			throw new Error('Database conection error')
 		}
@@ -51,10 +52,11 @@ class Server {
 	}
 
 	listen(){
-		this.app.listen( this.port, () => {
-			console.log('Servidor funcionando en puerto: ' + this.port);
+		return this.app.listen( this.port, () => {
+			logger.info('Servidor funcionando en puerto: ' + this.port);
 		})
 	}
+	
 }
 
 

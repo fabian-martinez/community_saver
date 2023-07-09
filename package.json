@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc",
-    "test": "ts-mocha test/services/loanService.test.ts",
+    "test": "ts-mocha --timeout 10000",
     "clean": "rm -r dist/*"
   },
   "keywords": [],
@@ -21,11 +21,14 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/chai": "^4.3.5",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/mocha": "^10.0.1",
     "@types/sinon": "^10.0.15",
+    "@types/supertest": "^2.0.12",
+    "axios": "^1.4.0",
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
     "sequelize-test-helpers": "^1.4.3",

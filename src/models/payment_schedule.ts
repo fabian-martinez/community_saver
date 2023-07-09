@@ -6,7 +6,8 @@ interface PaymentScheduleRecord {
     capital:number,
     interest:number,
     balance:number,
-    state:string //'PAYED' and 'PENNDING'
+    disbursement?:number,
+    state:string //'PAID' and 'PENNDING'
 }
 
 interface PaymentSchedule {

@@ -12,10 +12,8 @@ export function initModels(sequelize: Sequelize): void {
 
   // Asociar los modelos si es necesario
   const models: any = sequelize.models;
-  console.log(models);
   Object.keys(models).forEach((modelName: string) => {
     if (models[modelName].associate) {
-      console.log(modelName);
       models[modelName].associate();
     }
   });

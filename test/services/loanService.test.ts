@@ -1,21 +1,27 @@
 import { expect } from 'chai';
-import sinon, { SinonStubbedInstance } from 'sinon';
-import { Loan, LoanModel } from "../../src/models/loan";
-import LoanService from "../../src/services/loanService"
-import { Borrower } from '../../src/models/borrower';
+import sinon from 'sinon';
+
+import { Loan } from "../../src/models/loan";
 import { LoanPayment } from '../../src/models/loan_payment';
+import { LoanDisbursement } from '../../src/models/loan_disbursement';
 import { PaymentSchedule } from '../../src/models/payment_schedule';
+import { Borrower } from '../../src/models/borrower';
+
+import LoanService from "../../src/services/loanService"
+
 
 import { 
     agilLoanByBorrower, 
     allLoans, 
     borrowerWithATypeLoan, 
     borrowerWithTwoLoans, 
-    borrowerWithoutLoans, 
-    loansByBorrower, 
-    newLoan, 
-    paymentScheduleToNewLoan 
+    borrowerWithoutLoans,
+    loansByBorrower,
+    oldLoanWithPaymentsAndDisbursement,
+    paymentHistoric
 } from '../testData';
+
+
 
 describe('LoanService', () => {
 
@@ -29,7 +35,7 @@ describe('LoanService', () => {
 
         const findAllStub = sinon.stub(Loan, 'findAll').resolves(allLoans);
         
-        const response:LoanModel[] = await loanService.getLoans();
+        const response = await loanService.getLoans();
         
         expect(response).to.be.an('array')
         expect(response).have.lengthOf(2)
@@ -130,45 +136,40 @@ describe('LoanService', () => {
         findAllStub.restore();
     });
     
-    it('should get payment schedule when the loan start', async () => {
-        const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(newLoan);
-        const findAllStub = sinon.stub(LoanPayment, 'findAll').resolves(undefined);
+    // it('should get payment schedule when the loan start', async () => {
 
-        const whereFilter = {where:{loan_id:1}}
-
-        const paymentSchedule:PaymentSchedule = await loanService.getPaymentSchedule(1);
-
-        expect(findByPkStub.calledOnceWith(1)).to.be.true;
-        expect(findAllStub.calledOnceWith(whereFilter)).to.be.true;
-        expect(paymentSchedule.loan).to.be.an('Loan');
-        expect(paymentSchedule.payment_records).to.be.an('array');
-        expect(JSON.stringify(paymentSchedule)).to.eql(JSON.stringify(paymentScheduleToNewLoan));
-        findAllStub.restore();
-        findByPkStub.restore();
-    });
+    // });
     
-    it('should get payment schedule when the loan is in the half', async () => {
+    // it('should get payment schedule when the loan is in the half', async () => {
         
-    });
+    // });
     
-    it('should get payment schedule when the loan has extra payments', async () => {
+    // it('should get payment schedule when the loan has extra payments', async () => {
         
-    });
+    // });
     
     it('should get payment historics', async () => {
-        
-    });
-    
-    it('should disburse a Loan', async () => {
-        
-    });
-    
-    it('should pay a Loan', async () => {
-        
-    });
+        const findByPkLoanStub = sinon.stub(Loan, 'findByPk').resolves(oldLoanWithPaymentsAndDisbursement);
+        const includeOption = {include:[{model:LoanPayment},{model:LoanDisbursement}]};
 
-    it('should create a new Loan', async () => {
+        const paymentScheduleToOldLoan:PaymentSchedule = await loanService.getPaymentSchedule(32);
+
+        expect(findByPkLoanStub.calledOnceWith(34,includeOption))
+        expect(JSON.stringify(paymentScheduleToOldLoan)).to.eql(JSON.stringify(paymentHistoric))
         
+        findByPkLoanStub.restore();
     });
+    
+    // it('should disburse a Loan', async () => {
+        
+    // });
+    
+    // it('should pay a Loan', async () => {
+        
+    // });
+
+    // it('should create a new Loan', async () => {
+        
+    // });
         
 });

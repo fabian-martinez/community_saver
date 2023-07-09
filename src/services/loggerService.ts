@@ -4,7 +4,7 @@ const logger: Logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    winston.format.printf(({ level, message, timestamp }) => {
+    winston.format.printf(({ level, message, timestamp, stack }) => {
       return `${timestamp} [${level.toUpperCase()}]: ${message}`;
     })
   ),
