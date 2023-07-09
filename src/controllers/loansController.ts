@@ -33,7 +33,7 @@ class LoanController{
     public async putPayment(req:Request, res:Response) {
         
     }
-    public async putDisburtment(req:Request, res:Response) {
+    public async putDisburtsement(req:Request, res:Response) {
         
     }
 }
