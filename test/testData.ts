@@ -12,7 +12,7 @@ initModels(sequelize)
         
 export const allLoans:Loan[] = [
     Loan.build({
-        "id": 34,
+        "id": 'f7dcf876-1840-4be8-aee0-3a4734d2d44',
         "borrower_id": 1,
         "original_amount": 10000,
         "updated_amount": 1000,
@@ -23,7 +23,7 @@ export const allLoans:Loan[] = [
         "loan_type": "ACCION"
     }),
     Loan.build({
-        "id": 4,
+        "id": 'ddbb5d48-9c47-46ea-a7df-3be17db984c9',
         "borrower_id": 4,
         "original_amount": 4200000,
         "updated_amount": 4200000,
@@ -37,7 +37,7 @@ export const allLoans:Loan[] = [
 
 export const loansByBorrower:Loan[] = [
     Loan.build({
-        "id": 34,
+        "id": 'f7dcf876-1840-4be8-aee0-3a4734d2d44',
         "borrower_id": 1,
         "original_amount": 10000,
         "updated_amount": 1000,
@@ -48,7 +48,7 @@ export const loansByBorrower:Loan[] = [
         "loan_type": "ACCION"
     }),
     Loan.build({
-        "id": 32,
+        "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
         "borrower_id": 1,
         "original_amount": 4200000,
         "updated_amount": 4200000,
@@ -62,7 +62,7 @@ export const loansByBorrower:Loan[] = [
 
 export const agilLoanByBorrower = [
     Loan.build({
-        "id": 32,
+        "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
         "borrower_id": 1,
         "original_amount": 4200000,
         "updated_amount": 4200000,
@@ -75,7 +75,7 @@ export const agilLoanByBorrower = [
 ]
 
 export const borrowerWithTwoLoans:Borrower = Borrower.build({
-    id:1,
+    id:'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
     name:'John Doe',
     loans: loansByBorrower
 },{
@@ -83,20 +83,20 @@ export const borrowerWithTwoLoans:Borrower = Borrower.build({
 })
 
 export const borrowerWithATypeLoan:Borrower = Borrower.build({
-    id:1,name:'John Doe',
+    id:'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',name:'John Doe',
     loans: agilLoanByBorrower
 },{
     include:[Loan]
 })
 
 export const borrowerWithoutLoans:Borrower = Borrower.build({
-    id:1,name:'John Doe',
+    id:'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',name:'John Doe',
 },{
     include:[Loan]
 })
 
 export const newLoan = Loan.build({
-    "id": 32,
+    "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
     "borrower_id": 1,
     "original_amount": 8806200,
     'updated_amount': 8806200,
@@ -107,7 +107,7 @@ export const newLoan = Loan.build({
 })
 
 export const oldLoan = Loan.build({
-    "id": 32,
+    "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
     "borrower_id": 1,
     "original_amount": 8806200,
     'updated_amount': 6400000,
@@ -131,7 +131,7 @@ export const loanPayments:LoanPayment[] = [
 ]
 
 export const oldLoanWithPaymentsAndDisbursement:Loan = Loan.build({
-    "id": 32,
+    "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
     "borrower_id": 1,
     "original_amount": 8806200,
     'updated_amount': 6400000,
