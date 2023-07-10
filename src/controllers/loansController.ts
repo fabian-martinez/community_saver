@@ -12,8 +12,8 @@ class LoanController{
 
     public getLoans = async (req:Request, res:Response):Promise<void> => {
         try {
-            const borrowerName = req.query.borrower?.toString();
-            const loanType = req.query.type?.toString();
+            const borrowerName = req.query.borrower_name?.toString();
+            const loanType = req.query.loan_type?.toString();
             const loans = await this.loanService.getLoans(borrowerName,loanType)
             res.status(200).json(loans)
         } catch (error) {
