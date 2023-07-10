@@ -23,7 +23,7 @@ function init(sequelize: Sequelize): void {
         autoIncrement: true,
       },
       loan_id: {
-        type: DataTypes.INTEGER,
+        type: typeof DataTypes.UUID,
         allowNull: false,
         references: {
           model: 'loan',

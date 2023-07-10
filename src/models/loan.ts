@@ -4,7 +4,7 @@ import { LoanDisbursement } from './loan_disbursement';
 import { LoanPayment } from './loan_payment';
 
 interface LoanModel{
-  id: number;
+  id: typeof DataTypes.UUID;
   borrower_id: number;
   original_amount: number;
   updated_amount: number;
@@ -15,7 +15,7 @@ interface LoanModel{
   loan_type: string;
 } 
 class Loan extends Model implements LoanModel {
-  public id!: number;
+  public id!: typeof DataTypes.UUID;
   public borrower_id!: number;
   public original_amount!: number;
   public updated_amount!: number;
@@ -37,12 +37,12 @@ function init(sequelize: Sequelize): void {
   Loan.init(
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: typeof DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
       borrower_id: {
-        type: DataTypes.INTEGER,
+        type: typeof DataTypes.UUID,
         allowNull: false,
         references: {
           model: 'borrower',

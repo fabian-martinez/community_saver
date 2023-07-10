@@ -1,13 +1,12 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Loan } from './loan';
-
 interface BorrowerModel{
-  id:number;
+  id: typeof DataTypes.UUID;
   name:string;
 }
 
 class Borrower extends Model {
-  public id!: number;
+  public id!: typeof DataTypes.UUID;
   public name!: string;
 
   // Asociaciones
@@ -20,7 +19,7 @@ function init(sequelize: Sequelize): void {
   Borrower.init(
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: typeof DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
