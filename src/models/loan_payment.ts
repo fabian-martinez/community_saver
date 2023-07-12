@@ -42,6 +42,10 @@ function init(sequelize: Sequelize): void {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
+      last_balance: {
+        type: DataTypes.DECIMAL(20, 2),
+        allowNull: false,
+      },
     },
     {
       sequelize,
