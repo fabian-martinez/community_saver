@@ -27,12 +27,13 @@ class LoanController{
               }
         }
     }
-    public async getLoansByBorrower(req:Request, res:Response) {
+    public getLoansByBorrower = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
     }
-    public async getLoan(req:Request, res:Response) {
+    public getLoan = async (req:Request, res:Response):Promise<void> => {
         try {
             const loanId:string = req.params.id
+            logger.info(loanId)
             const loan = await this.loanService.getLoan(loanId);
             res.status(200).json(loan)
         } catch (error) {
@@ -41,17 +42,18 @@ class LoanController{
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
+                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }
     }
-    public async postNewLoan(req:Request, res:Response) {
+    public postNewLoan = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
     }
-    public async putPayment(req:Request, res:Response) {
+    public putPayment = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
     }
-    public async putDisburtsement(req:Request, res:Response) {
+    public putDisburtsement = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
     }
 }
