@@ -5,7 +5,7 @@ import { LoanPayment } from './loan_payment';
 
 interface LoanModel{
   id: typeof DataTypes.UUID;
-  borrower_id: number;
+  borrower_id: typeof DataTypes.UUID;
   original_amount: number;
   updated_amount: number;
   monthly_payment_amount: number;
@@ -16,7 +16,7 @@ interface LoanModel{
 } 
 class Loan extends Model implements LoanModel {
   public id!: typeof DataTypes.UUID;
-  public borrower_id!: number;
+  public borrower_id!: typeof DataTypes.UUID;
   public original_amount!: number;
   public updated_amount!: number;
   public monthly_payment_amount!: number;

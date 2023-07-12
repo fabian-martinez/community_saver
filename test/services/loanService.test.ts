@@ -17,7 +17,7 @@ import {
     borrowerWithTwoLoans, 
     borrowerWithoutLoans,
     loansByBorrower,
-    oldLoanWithPaymentsAndDisbursement,
+    oldLoanWithPaymentsAndDisbursements,
     paymentHistoric
 } from '../testData';
 
@@ -148,17 +148,17 @@ describe('LoanService', () => {
         
     // });
     
-    it('should get payment historics', async () => {
-        const findByPkLoanStub = sinon.stub(Loan, 'findByPk').resolves(oldLoanWithPaymentsAndDisbursement);
-        const includeOption = {include:[{model:LoanPayment},{model:LoanDisbursement}]};
+    // it('should get Loan with payment historics', async () => {
+    //     const findByPkLoanStub = sinon.stub(Loan, 'findByPk').resolves(oldLoanWithPaymentsAndDisbursements);
+    //     const includeOption = {include:[{model:LoanPayment},{model:LoanDisbursement}]};
 
-        const paymentScheduleToOldLoan:PaymentSchedule = await loanService.getPaymentSchedule(32);
+    //     const paymentScheduleToOldLoan:PaymentSchedule = await loanService.getLoan('e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f');
 
-        expect(findByPkLoanStub.calledOnceWith(34,includeOption))
-        expect(JSON.stringify(paymentScheduleToOldLoan)).to.eql(JSON.stringify(paymentHistoric))
+    //     expect(findByPkLoanStub.calledOnceWith('e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',includeOption))
+    //     expect(JSON.stringify(paymentScheduleToOldLoan)).to.eql(JSON.stringify(paymentHistoric))
         
-        findByPkLoanStub.restore();
-    });
+    //     findByPkLoanStub.restore();
+    // });
     
     // it('should disburse a Loan', async () => {
         

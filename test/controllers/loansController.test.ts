@@ -5,7 +5,7 @@ import LoanController from '../../src/controllers/loansController';
 import { Request, Response } from "express";
 import LoanService from "../../src/services/loanService";
 
-import { allLoans, borrowerWithTwoLoans, loansByBorrower } from '../testData';
+import { allLoans, loansByBorrower } from '../testData';
 
 describe('Loan Controller', () => {
 

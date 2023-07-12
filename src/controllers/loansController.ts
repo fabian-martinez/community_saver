@@ -25,7 +25,14 @@ class LoanController{
         res.json("Por implementar")
     }
     public async getLoan(req:Request, res:Response) {
-        res.json("Por implementar")
+        try {
+            const loanId:string = req.params.id
+            const loan = await this.loanService.getLoan(loanId);
+            res.status(200).json(loan)
+        } catch (error) {
+            logger.error(error)
+            res.status(500).json();
+        }
     }
     public async postNewLoan(req:Request, res:Response) {
         

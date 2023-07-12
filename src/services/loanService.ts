@@ -6,9 +6,9 @@ import { PaymentSchedule } from "../models/payment_schedule";
 
 
 class LoanService {
-    public async getPaymentSchedule(loan_id: number):Promise<PaymentSchedule>  {
-        
+    public async getLoan(loan_id: string) {
         const loan = await Loan.findByPk(loan_id, {include:[LoanPayment, LoanDisbursement]})
+
 
         if (!loan) {
             throw new Error(`Loan with id ${loan_id} Not Found`)
@@ -29,34 +29,42 @@ class LoanService {
             loan_type:loan.loan_type
         } as Loan
 
-        const result = [];
+        // const result = [];
         let balance = 0;
+
+        const paymentsAndDisbursements = [...disbursmentData, ...paymentData]
+
+        // console.log(paymentsAndDisbursements);
         
-        for (let i = 0; i < paymentData.length; i++) {
-            const payment = paymentData[i];
-            const disbursement = disbursmentData.find((item) => item.date <= payment.date);
+        // for (let i = 0; i < paymentData.length; i++) {
+        //     const payment = paymentData[i];
+        //     const disbursement = disbursmentData.find((item) => item.date <= payment.date);
             
-            const entry = {
-                number: i,
-                date: payment.date,
-                capital: payment.payment_amount,
-                interest: payment.interest_amount,
-                balance: balance,
-                disbursement: disbursement?.disbursement_amount,
-                state: 'PAID',
-            };
+        //     const entry = {
+        //         number: i,
+        //         date: payment.date,
+        //         capital: payment.payment_amount,
+        //         interest: payment.interest_amount,
+        //         balance: balance,
+        //         disbursement: disbursement?.disbursement_amount,
+        //         state: 'PAID',
+        //     };
             
-            result.push(entry);
+        //     result.push(entry);
             
-            balance += (disbursement?.disbursement_amount) ? disbursement?.disbursement_amount : 0;
-            balance -= payment.payment_amount;
-        }
+        //     balance += (disbursement?.disbursement_amount) ? disbursement?.disbursement_amount : 0;
+        //     balance -= payment.payment_amount;
+        // }
         
-        return {loan:filteredLoan, payment_records:result}
-          
-        
-        // throw new Error('Method not implemented.');
+        throw new Error('Method not implemented.');
+
+        // return {loan:filteredLoan, payment_records:result}
     }
+
+    // public async getPaymentSchedule(loan_id: number):Promise<PaymentSchedule>  {
+        
+    //     // throw new Error('Method not implemented.');
+    // }
     
     public async getLoans(borrowerName?:string,loanType?:string):Promise<LoanModel[]> {
         

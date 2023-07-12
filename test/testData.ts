@@ -13,7 +13,7 @@ initModels(sequelize)
 export const allLoans:Loan[] = [
     Loan.build({
         "id": 'f7dcf876-1840-4be8-aee0-3a4734d2d44',
-        "borrower_id": 1,
+        "borrower_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
         "original_amount": 10000,
         "updated_amount": 1000,
         "monthly_payment_amount": 0,
@@ -24,7 +24,7 @@ export const allLoans:Loan[] = [
     }),
     Loan.build({
         "id": 'ddbb5d48-9c47-46ea-a7df-3be17db984c9',
-        "borrower_id": 4,
+        "borrower_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',
         "original_amount": 4200000,
         "updated_amount": 4200000,
         "monthly_payment_amount": 0,
@@ -38,7 +38,7 @@ export const allLoans:Loan[] = [
 export const loansByBorrower:Loan[] = [
     Loan.build({
         "id": 'f7dcf876-1840-4be8-aee0-3a4734d2d44',
-        "borrower_id": 1,
+        "borrower_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
         "original_amount": 10000,
         "updated_amount": 1000,
         "monthly_payment_amount": 0,
@@ -49,7 +49,7 @@ export const loansByBorrower:Loan[] = [
     }),
     Loan.build({
         "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
-        "borrower_id": 1,
+        "borrower_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
         "original_amount": 4200000,
         "updated_amount": 4200000,
         "monthly_payment_amount": 0,
@@ -118,19 +118,19 @@ export const oldLoan = Loan.build({
 })
 
 export const loandDisbursements:LoanDisbursement[] = [
-    LoanDisbursement.build({ 'id': 1,'loan_id': 32,'date': new Date(2022,1,1),'disbursement_amount': 3000000}),
-    LoanDisbursement.build({ 'id': 2,'loan_id': 32,'date': new Date(2022,2,1),'disbursement_amount': 4000000}),
-    LoanDisbursement.build({ 'id': 3,'loan_id': 32,'date': new Date(2022,3,1),'disbursement_amount': 1806200}),
+    LoanDisbursement.build({ 'id': 1,'loan_id': 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,1,1),'disbursement_amount': 3000000}),
+    LoanDisbursement.build({ 'id': 2,'loan_id': 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'disbursement_amount': 4000000}),
+    LoanDisbursement.build({ 'id': 3,'loan_id': 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'disbursement_amount': 1806200}),
 ]
 
 export const loanPayments:LoanPayment[] = [
-    LoanPayment.build({'id':1,'loan_id':32,'date':new Date(2022, 2,1),'payment_amount':0      ,'interest_amount':45000  }),
-    LoanPayment.build({'id':2,'loan_id':32,'date':new Date(2022, 3,1),'payment_amount':0      ,'interest_amount':105000 }),
-    LoanPayment.build({'id':3,'loan_id':32,'date':new Date(2022, 4,1),'payment_amount':806200 ,'interest_amount':132093 }),
-    LoanPayment.build({'id':4,'loan_id':32,'date':new Date(2022, 5,1),'payment_amount':1600000,'interest_amount':120000 }),
+    LoanPayment.build({'id':1,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 2,1),'payment_amount':0      ,'interest_amount':45000  }),
+    LoanPayment.build({'id':2,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 3,1),'payment_amount':0      ,'interest_amount':105000 }),
+    LoanPayment.build({'id':3,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 4,1),'payment_amount':806200 ,'interest_amount':132093 }),
+    LoanPayment.build({'id':4,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 5,1),'payment_amount':1600000,'interest_amount':120000 }),
 ]
 
-export const oldLoanWithPaymentsAndDisbursement:Loan = Loan.build({
+export const oldLoanWithPaymentsAndDisbursements:Loan = Loan.build({
     "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
     "borrower_id": 1,
     "original_amount": 8806200,
@@ -148,15 +148,11 @@ export const oldLoanWithPaymentsAndDisbursement:Loan = Loan.build({
 export const paymentHistoric:PaymentSchedule = {
     loan:oldLoan,
     payment_records:[
-        {'number':2, 'date':new Date('1/01/22'),'capital':0,       'interest':	0,      'balance':	3000000, 'disbursement': 3000000, 'state':	'PAID'},
-        {'number':3, 'date':new Date('1/02/22'),'capital':0,       'interest':	45000,  'balance':	7000000, 'disbursement': 4000000, 'state':	'PAID'},
-        {'number':4, 'date':new Date('1/03/22'),'capital':0,       'interest':	105000, 'balance':	8806200, 'disbursement': 1806200, 'state':	'PAID'},
+        {'number':1, 'date':new Date('1/01/22'),'capital':0,       'interest':	0,      'balance':	3000000, 'disbursement': 3000000, 'state':	'PAID'},
+        {'number':2, 'date':new Date('1/02/22'),'capital':0,       'interest':	45000,  'balance':	7000000, 'disbursement': 4000000, 'state':	'PAID'},
+        {'number':3, 'date':new Date('1/03/22'),'capital':0,       'interest':	105000, 'balance':	8806200, 'disbursement': 1806200, 'state':	'PAID'},
         {'number':4, 'date':new Date('1/04/22'),'capital':806200,  'interest':	132093, 'balance':	8000000, 'state':	'PAID'    },
         {'number':5, 'date':new Date('1/05/22'),'capital':1600000, 'interest':	120000, 'balance':	6400000, 'state':	'PAID'    },
-        {'number':6, 'date':new Date('2/06/22'),'capital':1600000, 'interest':	96000,  'balance':	4800000, 'state':	'PENNDING'},
-        {'number':7, 'date':new Date('3/07/22'),'capital':1600000, 'interest':	72000,  'balance':	3200000, 'state':	'PENNDING'},
-        {'number':8, 'date':new Date('4/08/22'),'capital':1600000, 'interest':	48000,  'balance':	1600000, 'state':	'PENNDING'},
-        {'number':9, 'date':new Date('5/09/22'),'capital':1600000, 'interest':	24000,  'balance':	0,       'state':	'PENNDING'},
     ]
 }    
 
