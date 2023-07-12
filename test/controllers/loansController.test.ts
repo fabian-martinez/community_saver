@@ -44,7 +44,7 @@ describe('Loan Controller', () => {
 
         const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByBorrower)
 
-        const req = { query: { "borrower" :'test'} }
+        const req = { query: { "borrower_name" :'test'} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
@@ -66,7 +66,7 @@ describe('Loan Controller', () => {
 
         const getLoansStub = sinon.stub(loanService,'getLoans').resolves(allLoans)
 
-        const req = { query: { "type" :'TEST_TYPE'} }
+        const req = { query: { "loan_type" :'TEST_TYPE'} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
@@ -88,7 +88,7 @@ describe('Loan Controller', () => {
 
         const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByBorrower)
 
-        const req = { query: { "borrower":"test", "type" :'TEST_TYPE'} }
+        const req = { query: { "borrower_name":"test", "loan_type" :'TEST_TYPE'} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
