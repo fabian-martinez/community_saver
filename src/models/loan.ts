@@ -5,7 +5,7 @@ import { LoanPayment } from './loan_payment';
 
 interface LoanModel{
   id: typeof DataTypes.UUID;
-  borrower_id: typeof DataTypes.UUID;
+  member_id: typeof DataTypes.UUID;
   original_amount: number;
   updated_amount: number;
   monthly_payment_amount: number;
@@ -16,7 +16,7 @@ interface LoanModel{
 } 
 class Loan extends Model implements LoanModel {
   public id!: typeof DataTypes.UUID;
-  public borrower_id!: typeof DataTypes.UUID;
+  public member_id!: typeof DataTypes.UUID;
   public original_amount!: number;
   public updated_amount!: number;
   public monthly_payment_amount!: number;
@@ -27,7 +27,7 @@ class Loan extends Model implements LoanModel {
 
   // Asociaciones
   static associate() {
-    Loan.belongsTo(Borrower, { foreignKey: 'borrower_id' });
+    Loan.belongsTo(Borrower, { foreignKey: 'member_id' });
     Loan.hasMany(LoanDisbursement, { foreignKey: 'loan_id' });
     Loan.hasMany(LoanPayment, { foreignKey: 'loan_id' });
   }
@@ -41,7 +41,7 @@ function init(sequelize: Sequelize): void {
         primaryKey: true,
         autoIncrement: true,
       },
-      borrower_id: {
+      member_id: {
         type: typeof DataTypes.UUID,
         allowNull: false,
         references: {
