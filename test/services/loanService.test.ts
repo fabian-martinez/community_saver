@@ -2,9 +2,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { Loan } from "../../src/models/loan";
-import { LoanPayment } from '../../src/models/loan_payment';
-import { LoanDisbursement } from '../../src/models/loan_disbursement';
-import { PaymentSchedule } from '../../src/models/payment_schedule';
 import { Borrower } from '../../src/models/borrower';
 
 import LoanService from "../../src/services/loanService"
@@ -17,8 +14,7 @@ import {
     borrowerWithTwoLoans, 
     borrowerWithoutLoans,
     loansByBorrower,
-    oldLoanWithPaymentsAndDisbursements,
-    paymentHistoric
+    oldLoan
 } from '../testData';
 
 
@@ -116,7 +112,7 @@ describe('LoanService', () => {
                 console.error('Unexpected error', error)
             }
         }
-
+        
         findAllStub.restore();
     });
     
@@ -134,6 +130,19 @@ describe('LoanService', () => {
         }
 
         findAllStub.restore();
+    });
+
+    it('should ge loan by id', async () => {
+        
+        const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(oldLoan);
+        
+        const loan:Loan = await loanService.getLoan('test');
+    
+
+        expect(findByPkStub.calledOnceWith('test')).to.be.true;
+        expect(JSON.stringify(oldLoan)).to.eql(JSON.stringify(loan))
+
+        findByPkStub.restore();
     });
     
     // it('should get payment schedule when the loan start', async () => {

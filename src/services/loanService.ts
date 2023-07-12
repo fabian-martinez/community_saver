@@ -1,18 +1,20 @@
 import { Borrower } from "../models/borrower";
+import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanDisbursement } from "../models/loan_disbursement";
 import { LoanPayment } from "../models/loan_payment";
-import { PaymentSchedule } from "../models/payment_schedule";
 
 
 class LoanService {
-    public async getLoan(loan_id: string) {
+    public async getLoan(loan_id: string):Promise<Loan> {
         const loan = await Loan.findByPk(loan_id, {include:[LoanPayment, LoanDisbursement]})
 
 
         if (!loan) {
             throw new Error(`Loan with id ${loan_id} Not Found`)
         }
+
+        return loan;
 
         const disbursmentData = loan.get('loan_disbursements') as LoanDisbursement[]
         
@@ -83,7 +85,7 @@ class LoanService {
                 },
             });
             if (!borrower) {
-                throw new Error(`Borrower ${borrowerName} Not Found`)
+                throw new NotFoundError(`Borrower ${borrowerName} Not Found`)
             }
             const loans = await borrower.get('loans') as Loan[];
             return loans
@@ -94,7 +96,7 @@ class LoanService {
         })
 
         if (!loans) {
-            throw new Error("Loan Not Found")
+            throw new NotFoundError("Loan Not Found")
         }
         
         return loans
