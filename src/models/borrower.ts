@@ -1,22 +1,22 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Loan } from './loan';
-interface BorrowerModel{
+interface MemberModel{
   id: typeof DataTypes.UUID;
   name:string;
 }
 
-class Borrower extends Model {
+class Member extends Model {
   public id!: typeof DataTypes.UUID;
   public name!: string;
 
   // Asociaciones
   static associate() {
-    Borrower.hasMany(Loan, { foreignKey: 'borrower_id' });
+    Member.hasMany(Loan, { foreignKey: 'member_id' });
   }
 }
 
 function init(sequelize: Sequelize): void {
-  Borrower.init(
+  Member.init(
     {
       id: {
         type: typeof DataTypes.UUID,
@@ -36,4 +36,4 @@ function init(sequelize: Sequelize): void {
   );
 }
 
-export { Borrower, init };
+export { Member as Borrower, init };
