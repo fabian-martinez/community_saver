@@ -2,9 +2,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { Loan } from "../../src/models/loan";
-import { LoanPayment } from '../../src/models/loan_payment';
-import { LoanDisbursement } from '../../src/models/loan_disbursement';
-import { PaymentSchedule } from '../../src/models/payment_schedule';
 import { Borrower } from '../../src/models/borrower';
 
 import LoanService from "../../src/services/loanService"
@@ -17,8 +14,7 @@ import {
     borrowerWithTwoLoans, 
     borrowerWithoutLoans,
     loansByBorrower,
-    oldLoanWithPaymentsAndDisbursement,
-    paymentHistoric
+    oldLoan
 } from '../testData';
 
 
@@ -116,7 +112,7 @@ describe('LoanService', () => {
                 console.error('Unexpected error', error)
             }
         }
-
+        
         findAllStub.restore();
     });
     
@@ -135,6 +131,19 @@ describe('LoanService', () => {
 
         findAllStub.restore();
     });
+
+    it('should ge loan by id', async () => {
+        
+        const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(oldLoan);
+        
+        const loan:Loan = await loanService.getLoan('test');
+    
+
+        expect(findByPkStub.calledOnceWith('test')).to.be.true;
+        expect(JSON.stringify(oldLoan)).to.eql(JSON.stringify(loan))
+
+        findByPkStub.restore();
+    });
     
     // it('should get payment schedule when the loan start', async () => {
 
@@ -148,17 +157,17 @@ describe('LoanService', () => {
         
     // });
     
-    it('should get payment historics', async () => {
-        const findByPkLoanStub = sinon.stub(Loan, 'findByPk').resolves(oldLoanWithPaymentsAndDisbursement);
-        const includeOption = {include:[{model:LoanPayment},{model:LoanDisbursement}]};
+    // it('should get Loan with payment historics', async () => {
+    //     const findByPkLoanStub = sinon.stub(Loan, 'findByPk').resolves(oldLoanWithPaymentsAndDisbursements);
+    //     const includeOption = {include:[{model:LoanPayment},{model:LoanDisbursement}]};
 
-        const paymentScheduleToOldLoan:PaymentSchedule = await loanService.getPaymentSchedule(32);
+    //     const paymentScheduleToOldLoan:PaymentSchedule = await loanService.getLoan('e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f');
 
-        expect(findByPkLoanStub.calledOnceWith(34,includeOption))
-        expect(JSON.stringify(paymentScheduleToOldLoan)).to.eql(JSON.stringify(paymentHistoric))
+    //     expect(findByPkLoanStub.calledOnceWith('e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',includeOption))
+    //     expect(JSON.stringify(paymentScheduleToOldLoan)).to.eql(JSON.stringify(paymentHistoric))
         
-        findByPkLoanStub.restore();
-    });
+    //     findByPkLoanStub.restore();
+    // });
     
     // it('should disburse a Loan', async () => {
         

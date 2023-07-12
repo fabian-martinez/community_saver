@@ -5,7 +5,8 @@ import LoanController from '../../src/controllers/loansController';
 import { Request, Response } from "express";
 import LoanService from "../../src/services/loanService";
 
-import { allLoans, borrowerWithTwoLoans, loansByBorrower } from '../testData';
+import { allLoans, loansByBorrower, oldLoan } from '../testData';
+import { NotFoundError } from "../../src/models/errors";
 
 describe('Loan Controller', () => {
 
@@ -106,6 +107,27 @@ describe('Loan Controller', () => {
         getLoansStub.restore();
     });
 
+    it('should call to Loand service get no Loan', async () => {
+        const getLoansStub = sinon.stub(loanService,'getLoans').rejects(new NotFoundError("Error simulado"))
+
+        const req = { query: { "borrower_name":"test", "loan_type" :'TEST_TYPE'} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(404);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.be.eql({ error: 'Error simulado' });
+            },
+        };
+
+        await loanController.getLoans(req as unknown as Request,res as Response)
+        
+        expect(getLoansStub.calledOnceWith('test','TEST_TYPE')).to.be.true
+
+        getLoansStub.restore();
+    });
+
     it('should throw an error when call to Loand service fail', async () => {
 
         const getLoansStub = sinon.stub(loanService,'getLoans').rejects(new Error("Error simulado"))
@@ -117,13 +139,55 @@ describe('Loan Controller', () => {
                 return res;
             },
             json: (data: any) => {
-                expect(data).to.be.undefined;
+                expect(data).to.be.eql({ error: 'Internal Server Error' });
             },
         };
 
         await loanController.getLoans(req as unknown as Request,res as Response)
         
         expect(getLoansStub.calledOnce).to.be.true
+
+        getLoansStub.restore();
+    });
+
+    it('should call to Loan service to get a loan by id', async () => {
+        const getLoanStub = sinon.stub(loanService,'getLoan').resolves(oldLoan)
+
+        const req = { params : { "id":"test"} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(oldLoan);
+            },
+        };
+
+        await loanController.getLoan(req as unknown as Request,res as Response)
+        
+        expect(getLoanStub.calledOnceWith('test')).to.be.true
+
+        getLoanStub.restore();
+    });
+
+    it('should call to Loan service to get no loan', async () => {
+        const getLoansStub = sinon.stub(loanService,'getLoan').rejects(new NotFoundError("Error simulado"))
+
+        const req = { params : { "id":"test"} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(404);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.be.eql({ error: 'Error simulado' });
+            },
+        };
+
+        await loanController.getLoan(req as unknown as Request,res as Response)
+        
+        expect(getLoansStub.calledOnceWith('test')).to.be.true
 
         getLoansStub.restore();
     });
