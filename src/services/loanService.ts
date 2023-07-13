@@ -50,19 +50,25 @@ class LoanService {
         return loans
     }
 
-    public async getLoanHistoric(loanid:string,page:number,per_page:number):Promise<any> {
-        const response = await Loan.findAndCountAll({
-            include:
-                {
-                    model:LoanTransaction,
-                    where:{
-                        'loan_id':loanid
-                    },
-                }
+    public async getLoanHistoric(loanid:string,pageNumber:number,pageSize:number):Promise<any> {
+        const rowAndCount = await LoanTransaction.findAndCountAll({
+            where:{
+                'loan_id':loanid
+            },
+            limit: pageSize,
+            offset: (pageNumber - 1) * pageSize
         })
 
-        if (!response) {
-            throw new NotFoundError(`Loan with id ${loanid} Not Found`)
+        if (rowAndCount.rows.length === 0) {
+            throw new NotFoundError(`Loan with id ${loanid} Not Found Historic`)
+        }
+
+        const response = {
+            'total':rowAndCount.count,
+            'page':pageNumber,
+            'per_page':pageSize,
+            'total_pages':Math.ceil(rowAndCount.count/pageSize),
+            'records':rowAndCount.rows
         }
 
         return response;

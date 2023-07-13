@@ -202,11 +202,11 @@ describe('Loan Controller', () => {
                 return res;
             },
             json: (data: any) => {
-                expect(data).to.deep.equal(oldLoan);
+                expect(data).to.deep.equal(paymentHistoric);
             },
         };
 
-        await loanController.getLoan(req as unknown as Request,res as Response)
+        await loanController.getLoanHistoric(req as unknown as Request,res as Response)
         
         expect(getLoanStub.calledOnceWith('test')).to.be.true
 

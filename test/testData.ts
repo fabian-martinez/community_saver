@@ -127,6 +127,19 @@ export const loanTransactions:LoanTransaction[] = [
     LoanTransaction.build({ 'id': 7,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,5,1),'payment_amount':1600000,'interest_amount':120000,'last_balance':6400000 }),
 ]
 
+export const rowAndCountData:any = {
+    count: 7,
+    rows: [
+        LoanTransaction.build({ 'id': 1,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,1,1),'disbursement_amount': 3000000, 'last_balance':3000000}),
+        LoanTransaction.build({ 'id': 2,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'disbursement_amount': 4000000, 'last_balance':7000000}),
+        LoanTransaction.build({ 'id': 3,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'disbursement_amount': 1806200, 'last_balance':8806200}),
+        LoanTransaction.build({ 'id': 4,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'payment_amount':0      ,'interest_amount':45000 ,'last_balance':7000000 }),
+        LoanTransaction.build({ 'id': 5,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'payment_amount':0      ,'interest_amount':105000,'last_balance':8806200 }),
+        LoanTransaction.build({ 'id': 6,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,4,1),'payment_amount':806200 ,'interest_amount':132093,'last_balance':8000000 }),
+        LoanTransaction.build({ 'id': 7,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,5,1),'payment_amount':1600000,'interest_amount':120000,'last_balance':6400000 }),
+    ]
+} 
+
 export const oldLoanWithPaymentsAndDisbursements:Loan = Loan.build({
     "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
     "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
@@ -142,18 +155,17 @@ export const oldLoanWithPaymentsAndDisbursements:Loan = Loan.build({
 })
 
 export const paymentHistoric = {
-    loan:oldLoan,
-    payment_records:[
+    records:[
         {'id':5, 'date':new Date('1/05/22'),'capital':1600000, 'interest':	120000, 'balance':	6400000, 'state':	'PAID'    },
         {'id':4, 'date':new Date('1/04/22'),'capital':806200,  'interest':	132093, 'balance':	8000000, 'state':	'PAID'    },
         {'id':3, 'date':new Date('1/03/22'),'capital':0,       'interest':	105000, 'balance':	8806200, 'disbursement': 1806200, 'state':	'PAID'},
         {'id':2, 'date':new Date('1/02/22'),'capital':0,       'interest':	45000,  'balance':	7000000, 'disbursement': 4000000, 'state':	'PAID'},
         {'id':1, 'date':new Date('1/01/22'),'capital':0,       'interest':	0,      'balance':	3000000, 'disbursement': 3000000, 'state':	'PAID'},
     ],
-    "total": 5,
-    "page": 1,
-    "per_page": 10,
-    "total_pages": 1,
+    total: 5,
+    page: 1,
+    per_page: 5,
+    total_pages: 1,
 }
 
 export const paymentHistoricPage1 = {

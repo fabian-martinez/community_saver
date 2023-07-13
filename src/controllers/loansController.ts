@@ -51,11 +51,19 @@ class LoanController{
     public getLoanHistoric =async (req:Request, res:Response) => {
         try {
             const loanId:string = req.params.id
-            const response = await this.loanService.getLoanHistoric(loanId,10,10);
+            const page:number = parseInt(req.query.page!.toString())
+            const per_page:number = parseInt(req.query.per_page!.toString())
+            const response = await this.loanService.getLoanHistoric(loanId,page,per_page);
             res.status(200).json(response)
         } catch (error) {
-            logger.error(error)
+            if (error instanceof BadRequestError) {
+                res.status(error.code).json({ error: error.message });
+              } else if (error instanceof NotFoundError) {
+                res.status(error.code).json({ error: error.message });
+              } else {
+                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
+              }
         }
     }
     public postNewLoan = async (req:Request, res:Response):Promise<void> => {
