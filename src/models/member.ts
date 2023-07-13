@@ -30,10 +30,10 @@ function init(sequelize: Sequelize): void {
     },
     {
       sequelize,
-      modelName: 'borrower',
-      tableName: 'borrowers',
+      modelName: 'member',
+      tableName: 'members',
     }
   );
 }
 
-export { Member as Borrower, init };
+export { Member , init };

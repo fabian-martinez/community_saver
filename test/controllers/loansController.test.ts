@@ -5,7 +5,7 @@ import LoanController from '../../src/controllers/loansController';
 import { Request, Response } from "express";
 import LoanService from "../../src/services/loanService";
 
-import { allLoans, loansByBorrower, oldLoan } from '../testData';
+import { allLoans, loansByMember, oldLoan } from '../testData';
 import { NotFoundError } from "../../src/models/errors";
 
 describe('Loan Controller', () => {
@@ -41,18 +41,18 @@ describe('Loan Controller', () => {
         getLoansStub.restore();
     });
 
-    it('should call to Loand service to get all loans of a borrower', async () => {
+    it('should call to Loand service to get all loans of a member', async () => {
 
-        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByBorrower)
+        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByMember)
 
-        const req = { query: { "borrower_name" :'test'} }
+        const req = { query: { "member_name" :'test'} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
                 return res;
             },
             json: (data: any) => {
-                expect(data).to.deep.equal(loansByBorrower);
+                expect(data).to.deep.equal(loansByMember);
             },
         };
 
@@ -85,18 +85,18 @@ describe('Loan Controller', () => {
         getLoansStub.restore();
     });
 
-    it('should call to Loand service to get all loans of a type a borrower', async () => {
+    it('should call to Loand service to get all loans of a type a member', async () => {
 
-        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByBorrower)
+        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByMember)
 
-        const req = { query: { "borrower_name":"test", "loan_type" :'TEST_TYPE'} }
+        const req = { query: { "member_name":"test", "loan_type" :'TEST_TYPE'} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
                 return res;
             },
             json: (data: any) => {
-                expect(data).to.deep.equal(loansByBorrower);
+                expect(data).to.deep.equal(loansByMember);
             },
         };
 
@@ -110,7 +110,7 @@ describe('Loan Controller', () => {
     it('should call to Loand service get no Loan', async () => {
         const getLoansStub = sinon.stub(loanService,'getLoans').rejects(new NotFoundError("Error simulado"))
 
-        const req = { query: { "borrower_name":"test", "loan_type" :'TEST_TYPE'} }
+        const req = { query: { "member_name":"test", "loan_type" :'TEST_TYPE'} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(404);

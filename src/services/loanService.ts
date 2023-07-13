@@ -1,4 +1,4 @@
-import { Borrower } from "../models/borrower";
+import { Member } from "../models/member";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanDisbursement } from "../models/loan_disbursement";
@@ -18,7 +18,7 @@ class LoanService {
 
     }
     
-    public async getLoans(borrowerName?:string,loanType?:string):Promise<LoanModel[]> {
+    public async getLoans(memberName?:string,loanType?:string):Promise<LoanModel[]> {
         
         const whereClause: any = {};
 
@@ -26,26 +26,25 @@ class LoanService {
             whereClause.loan_type = loanType;
         } 
 
-        if(borrowerName) {
-            const borrower = await Borrower.findOne({
-                where: {name:borrowerName},
+        if(memberName) {
+            const member = await Member.findOne({
+                where: {name:memberName},
                 include: {
                     model: Loan,
                     where: whereClause,
                 },
             });
-            if (!borrower) {
-                throw new NotFoundError(`Borrower ${borrowerName} Not Found`)
+            if (!member) {
+                throw new NotFoundError(`Member loan ${memberName} Not Found`)
             }
-            const loans = await borrower.get('loans') as Loan[];
-            return loans
+            return await member.get('loans') as Loan[];
         }
         
         const loans = await Loan.findAll({
             where: whereClause
         })
 
-        if (!loans) {
+        if (loans.length === 0) {
             throw new NotFoundError("Loan Not Found")
         }
         
