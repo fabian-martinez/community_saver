@@ -1,14 +1,12 @@
 import { Sequelize } from 'sequelize';
 import { init as initMember } from './member';
 import { init as initLoan } from './loan';
-import { init as initLoanDisbursement } from './loan_disbursement';
-import { init as initLoanPayment } from './loan_payment';
+import { init as initLoanTransaction } from './loan_transaction';
 
 export function initModels(sequelize: Sequelize): void {
   initMember(sequelize);
   initLoan(sequelize);
-  initLoanDisbursement(sequelize);
-  initLoanPayment(sequelize);
+  initLoanTransaction(sequelize);
 
   // Asociar los modelos si es necesario
   const models: any = sequelize.models;

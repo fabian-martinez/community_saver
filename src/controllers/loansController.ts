@@ -48,6 +48,16 @@ class LoanController{
               }
         }
     }
+    public getLoanHistoric =async (req:Request, res:Response) => {
+        try {
+            const loanId:string = req.params.id
+            const response = await this.loanService.getLoanHistoric(loanId,10,10);
+            res.status(200).json(response)
+        } catch (error) {
+            logger.error(error)
+                res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
     public postNewLoan = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
     }

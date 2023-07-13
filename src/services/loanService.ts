@@ -1,8 +1,7 @@
 import { Member } from "../models/member";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
-import { LoanDisbursement } from "../models/loan_disbursement";
-import { LoanPayment } from "../models/loan_payment";
+import { LoanTransaction } from "../models/loan_transaction";
 
 
 class LoanService {
@@ -49,6 +48,24 @@ class LoanService {
         }
         
         return loans
+    }
+
+    public async getLoanHistoric(loanid:string,page:number,per_page:number):Promise<any> {
+        const response = await Loan.findAndCountAll({
+            include:
+                {
+                    model:LoanTransaction,
+                    where:{
+                        'loan_id':loanid
+                    },
+                }
+        })
+
+        if (!response) {
+            throw new NotFoundError(`Loan with id ${loanid} Not Found`)
+        }
+
+        return response;
     }
 }
 
