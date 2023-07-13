@@ -70,7 +70,7 @@ describe('LoanService', () => {
 
     it('should throw an error when Member not found', async () => {
         
-        const findOneStub = sinon.stub(Member, 'findOne').resolves(null);
+        const findOneStub = sinon.stub(Member, 'findOne').resolves(undefined);
         try {
             await loanService.getLoans('Jhon Doe');
         } catch (error) {
@@ -84,7 +84,7 @@ describe('LoanService', () => {
         findOneStub.restore();
     });
     
-    it('should throw an error when Loan type not found to a member', async () => {
+    it('should throw an error when Loans type not found to a member', async () => {
         
         const findOneStub = sinon.stub(Member, 'findOne').resolves(memberWithoutLoans);
         try {
@@ -100,9 +100,9 @@ describe('LoanService', () => {
         findOneStub.restore();
     });
     
-    it('should throw an error when no a Loan type', async () => {
+    it('should throw an error when no a Loans type', async () => {
         
-        const findAllStub = sinon.stub(Loan, 'findAll').resolves(undefined);
+        const findAllStub = sinon.stub(Loan, 'findAll').resolves([]);
         try {
             await loanService.getLoans(undefined,'AGILE');
         } catch (error) {
@@ -118,7 +118,7 @@ describe('LoanService', () => {
     
     it('should throw an error when no Loans', async () => {
         
-        const findAllStub = sinon.stub(Loan, 'findAll').resolves(undefined);
+        const findAllStub = sinon.stub(Loan, 'findAll').resolves([]);
         try {
             await loanService.getLoans();
         } catch (error) {
@@ -132,7 +132,7 @@ describe('LoanService', () => {
         findAllStub.restore();
     });
 
-    it('should ge loan by id', async () => {
+    it('should get loan by id', async () => {
         
         const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(oldLoan);
         
@@ -141,6 +141,22 @@ describe('LoanService', () => {
 
         expect(findByPkStub.calledOnceWith('test')).to.be.true;
         expect(JSON.stringify(oldLoan)).to.eql(JSON.stringify(loan))
+
+        findByPkStub.restore();
+    });
+
+    it('should get loan by id no loan', async () => {
+        const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(undefined);
+        
+        try {
+            await loanService.getLoan('test');
+        } catch (error) {
+            if (error instanceof Error) {
+                expect(error.message).to.equal(`Loan with id test Not Found`)
+            }else{
+                console.error('Unexpected error', error)
+            }
+        }
 
         findByPkStub.restore();
     });
@@ -157,19 +173,7 @@ describe('LoanService', () => {
         
     // });
     
-    // it('should get Loan with payment historics', async () => {
-    //     const findByPkLoanStub = sinon.stub(Loan, 'findByPk').resolves(oldLoanWithPaymentsAndDisbursements);
-    //     const includeOption = {include:[{model:LoanPayment},{model:LoanDisbursement}]};
-
-    //     const paymentScheduleToOldLoan:PaymentSchedule = await loanService.getLoan('e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f');
-
-    //     expect(findByPkLoanStub.calledOnceWith('e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',includeOption))
-    //     expect(JSON.stringify(paymentScheduleToOldLoan)).to.eql(JSON.stringify(paymentHistoric))
-        
-    //     findByPkLoanStub.restore();
-    // });
-    
-    // it('should disburse a Loan', async () => {
+    // it('should disburce a Loan', async () => {
         
     // });
     
