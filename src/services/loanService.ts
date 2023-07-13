@@ -7,11 +7,11 @@ import { LoanPayment } from "../models/loan_payment";
 
 class LoanService {
     public async getLoan(loan_id: string):Promise<Loan> {
-        const loan = await Loan.findByPk(loan_id, {include:[LoanPayment, LoanDisbursement]})
+        const loan = await Loan.findByPk(loan_id)
 
 
         if (!loan) {
-            throw new Error(`Loan with id ${loan_id} Not Found`)
+            throw new NotFoundError(`Loan with id ${loan_id} Not Found`)
         }
 
         return loan;
