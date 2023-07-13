@@ -13,9 +13,9 @@ class LoanController{
 
     public getLoans = async (req:Request, res:Response):Promise<void> => {
         try {
-            const borrowerName = req.query.borrower_name?.toString();
+            const memberName = req.query.member_name?.toString();
             const loanType = req.query.loan_type?.toString();
-            const loans = await this.loanService.getLoans(borrowerName,loanType)
+            const loans = await this.loanService.getLoans(memberName,loanType)
             res.status(200).json(loans)
         } catch (error) {
             if (error instanceof BadRequestError) {
@@ -23,11 +23,12 @@ class LoanController{
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
+                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }
     }
-    public getLoansByBorrower = async (req:Request, res:Response):Promise<void> => {
+    public getLoansByMember = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
     }
     public getLoan = async (req:Request, res:Response):Promise<void> => {

@@ -1,5 +1,5 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import { Borrower } from './borrower';
+import { Member } from './member';
 import { LoanDisbursement } from './loan_disbursement';
 import { LoanPayment } from './loan_payment';
 
@@ -27,7 +27,7 @@ class Loan extends Model implements LoanModel {
 
   // Asociaciones
   static associate() {
-    Loan.belongsTo(Borrower, { foreignKey: 'member_id' });
+    Loan.belongsTo(Member, { foreignKey: 'member_id' });
     Loan.hasMany(LoanDisbursement, { foreignKey: 'loan_id' });
     Loan.hasMany(LoanPayment, { foreignKey: 'loan_id' });
   }
@@ -45,7 +45,7 @@ function init(sequelize: Sequelize): void {
         type: typeof DataTypes.UUID,
         allowNull: false,
         references: {
-          model: 'borrower',
+          model: 'member',
           key: 'id',
         },
       },

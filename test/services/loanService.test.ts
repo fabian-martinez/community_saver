@@ -2,18 +2,18 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { Loan } from "../../src/models/loan";
-import { Borrower } from '../../src/models/borrower';
+import { Member } from '../../src/models/member';
 
 import LoanService from "../../src/services/loanService"
 
 
 import { 
-    agilLoanByBorrower, 
+    agilLoanByMember, 
     allLoans, 
-    borrowerWithATypeLoan, 
-    borrowerWithTwoLoans, 
-    borrowerWithoutLoans,
-    loansByBorrower,
+    memberWithATypeLoan, 
+    memberWithTwoLoans, 
+    memberWithoutLoans,
+    loansByMember,
     oldLoan
 } from '../testData';
 
@@ -41,41 +41,41 @@ describe('LoanService', () => {
         findAllStub.restore();
     });
     
-    it('should get all loans to a borrower', async () => {
+    it('should get all loans to a member', async () => {
 
         const filterOptions = { where: {name:'Jhon Doe'}, include: { model: Loan, where: {} }};
 
-        const findOneStub = sinon.stub(Borrower, 'findOne').resolves(borrowerWithTwoLoans);
+        const findOneStub = sinon.stub(Member, 'findOne').resolves(memberWithTwoLoans);
         const loans = await loanService.getLoans('Jhon Doe');
 
         expect(findOneStub.calledOnceWith(filterOptions)).to.be.true;
         expect(loans).to.be.an('array')
-        expect(JSON.stringify(loans)).to.eql(JSON.stringify(loansByBorrower))
+        expect(JSON.stringify(loans)).to.eql(JSON.stringify(loansByMember))
 
         findOneStub.restore();
     });
 
-    it('should get loans to a borrower and a type', async () => {
+    it('should get loans to a member and a type', async () => {
         const filterOptions = { where: {name:'Jhon Doe'}, include: { model: Loan, where: { loan_type: 'AGIL'} }};
 
-        const findOneStub = sinon.stub(Borrower, 'findOne').resolves(borrowerWithATypeLoan);
+        const findOneStub = sinon.stub(Member, 'findOne').resolves(memberWithATypeLoan);
         const loans = await loanService.getLoans('Jhon Doe','AGIL');
 
         expect(findOneStub.calledOnceWith(filterOptions)).to.be.true;
         expect(loans).to.be.an('array')
-        expect(JSON.stringify(loans)).to.eql(JSON.stringify(agilLoanByBorrower))
+        expect(JSON.stringify(loans)).to.eql(JSON.stringify(agilLoanByMember))
 
         findOneStub.restore();
     });
 
-    it('should throw an error when Borrower not found', async () => {
+    it('should throw an error when Member not found', async () => {
         
-        const findOneStub = sinon.stub(Borrower, 'findOne').resolves(null);
+        const findOneStub = sinon.stub(Member, 'findOne').resolves(null);
         try {
             await loanService.getLoans('Jhon Doe');
         } catch (error) {
             if (error instanceof Error) {
-                expect(error.message).to.equal(`Borrower Jhon Doe Not Found`)
+                expect(error.message).to.equal(`Member Jhon Doe Not Found`)
             }else{
                 console.error('Unexpected error', error)
             }
@@ -84,9 +84,9 @@ describe('LoanService', () => {
         findOneStub.restore();
     });
     
-    it('should throw an error when Loan type not found to a borrower', async () => {
+    it('should throw an error when Loan type not found to a member', async () => {
         
-        const findOneStub = sinon.stub(Borrower, 'findOne').resolves(borrowerWithoutLoans);
+        const findOneStub = sinon.stub(Member, 'findOne').resolves(memberWithoutLoans);
         try {
             await loanService.getLoans('Jhon Doe','AGILE');
         } catch (error) {

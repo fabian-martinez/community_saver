@@ -1,11 +1,11 @@
 import { Sequelize } from 'sequelize';
-import { init as initBorrower } from './borrower';
+import { init as initMember } from './member';
 import { init as initLoan } from './loan';
 import { init as initLoanDisbursement } from './loan_disbursement';
 import { init as initLoanPayment } from './loan_payment';
 
 export function initModels(sequelize: Sequelize): void {
-  initBorrower(sequelize);
+  initMember(sequelize);
   initLoan(sequelize);
   initLoanDisbursement(sequelize);
   initLoanPayment(sequelize);

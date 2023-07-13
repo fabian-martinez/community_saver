@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { initModels } from '../src/models/initModels';
 import { Loan } from '../src/models/loan';
-import { Borrower } from '../src/models/borrower';
+import { Member } from '../src/models/member';
 import { PaymentSchedule } from '../src/models/payment_schedule';
 import { LoanDisbursement } from '../src/models/loan_disbursement';
 import { LoanPayment } from '../src/models/loan_payment';
@@ -35,7 +35,7 @@ export const allLoans:Loan[] = [
     })
 ]
 
-export const loansByBorrower:Loan[] = [
+export const loansByMember:Loan[] = [
     Loan.build({
         "id": 'f7dcf876-1840-4be8-aee0-3a4734d2d44',
         "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
@@ -60,7 +60,7 @@ export const loansByBorrower:Loan[] = [
     })
 ]
 
-export const agilLoanByBorrower = [
+export const agilLoanByMember = [
     Loan.build({
         "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
         "member_id": 1,
@@ -74,22 +74,22 @@ export const agilLoanByBorrower = [
     })
 ]
 
-export const borrowerWithTwoLoans:Borrower = Borrower.build({
+export const memberWithTwoLoans:Member = Member.build({
     id:'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
     name:'John Doe',
-    loans: loansByBorrower
+    loans: loansByMember
 },{
     include:[Loan]
 })
 
-export const borrowerWithATypeLoan:Borrower = Borrower.build({
+export const memberWithATypeLoan:Member = Member.build({
     id:'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',name:'John Doe',
-    loans: agilLoanByBorrower
+    loans: agilLoanByMember
 },{
     include:[Loan]
 })
 
-export const borrowerWithoutLoans:Borrower = Borrower.build({
+export const memberWithoutLoans:Member = Member.build({
     id:'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',name:'John Doe',
 },{
     include:[Loan]
