@@ -14,8 +14,11 @@ import {
     memberWithTwoLoans, 
     memberWithoutLoans,
     loansByMember,
-    oldLoan
+    oldLoan,
+    paymentHistoric,
+    rowAndCountData
 } from '../testData';
+import { LoanTransaction } from '../../src/models/loan_transaction';
 
 
 
@@ -161,9 +164,23 @@ describe('LoanService', () => {
         findByPkStub.restore();
     });
     
-    // it('should get payment schedule when the loan start', async () => {
+    it('should get loan historic by id', async () => {
+        const findAndCountAllStub = sinon.stub(LoanTransaction, 'findAndCountAll').resolves(rowAndCountData);
 
-    // });
+        const filter = {where:{loan_id:'test'},limit: 10,offset: 0}
+        
+        const response = await loanService.getLoanHistoric('test',1,10);
+
+        expect(findAndCountAllStub.calledOnceWith(filter)).to.be.true;
+        expect(response.records).to.be.an('array')
+        expect(response.total).to.equal(7)
+        expect(response.page).to.equal(1)
+        expect(response.per_page).to.equal(10)
+        expect(response.total_pages).to.equal(1)
+        expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
+
+        findAndCountAllStub.restore();
+    });
     
     // it('should get payment schedule when the loan is in the half', async () => {
         

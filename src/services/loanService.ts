@@ -1,8 +1,7 @@
 import { Member } from "../models/member";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
-import { LoanDisbursement } from "../models/loan_disbursement";
-import { LoanPayment } from "../models/loan_payment";
+import { LoanTransaction } from "../models/loan_transaction";
 
 
 class LoanService {
@@ -49,6 +48,30 @@ class LoanService {
         }
         
         return loans
+    }
+
+    public async getLoanHistoric(loanid:string,pageNumber:number,pageSize:number):Promise<any> {
+        const rowAndCount = await LoanTransaction.findAndCountAll({
+            where:{
+                'loan_id':loanid
+            },
+            limit: pageSize,
+            offset: (pageNumber - 1) * pageSize
+        })
+
+        if (rowAndCount.rows.length === 0) {
+            throw new NotFoundError(`Loan with id ${loanid} Not Found Historic`)
+        }
+
+        const response = {
+            'total':rowAndCount.count,
+            'page':pageNumber,
+            'per_page':pageSize,
+            'total_pages':Math.ceil(rowAndCount.count/pageSize),
+            'records':rowAndCount.rows
+        }
+
+        return response;
     }
 }
 

@@ -1,22 +1,3 @@
-DROP TABLE IF EXISTS Audit;
-DROP TABLE IF EXISTS Insurance;
-DROP TABLE IF EXISTS LoanDisbursements;
-DROP TABLE IF EXISTS LoanPayments;
-DROP TABLE IF EXISTS Loans;
-DROP TABLE IF EXISTS Members;
-DROP TABLE IF EXISTS MeetingsReport;
-DROP TABLE IF EXISTS MemberObligations;
-DROP TABLE IF EXISTS MemberPayments;
-DROP TABLE IF EXISTS FundAssets;
-DROP TABLE IF EXISTS StockPerformance;
-DROP TABLE IF EXISTS StockTransactions;
-DROP TABLE IF EXISTS Contributions;
-DROP TABLE IF EXISTS MemberStock;
-DROP TABLE IF EXISTS Stocks;
-DROP TABLE IF EXISTS Members;
-
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Tabla "member"
 CREATE TABLE Members (
   id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -37,21 +18,14 @@ CREATE TABLE Loans (
 );
 
 -- Creación de la tabla LoanDisbursements
-CREATE TABLE LoanDisbursements (
+CREATE TABLE LoanTransactions (
   id SERIAL PRIMARY KEY,
   loan_id uuid,
   date TIMESTAMP DEFAULT current_timestamp,
   disbursement_amount DECIMAL(20),
-  FOREIGN KEY (loan_id) REFERENCES Loans(id)
-);
-
--- Creación de la tabla LoanTransactions
-CREATE TABLE LoanPayments (
-  id SERIAL PRIMARY KEY,
-  loan_id uuid,
-  date TIMESTAMP DEFAULT current_timestamp,
   payment_amount DECIMAL(20),
   interest_amount DECIMAL(20),
+  last_balance DECIMAL(20),
   FOREIGN KEY (loan_id) REFERENCES Loans(id)
 );
 

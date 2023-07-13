@@ -1,21 +1,22 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Loan } from './loan';
 
-class LoanPayment extends Model {
+class LoanTransaction extends Model {
   public id!: number;
   public loan_id!: number;
   public date!: Date;
   public payment_amount!: number;
   public interest_amount!: number;
-
+  public disbursement_amount!: number;
+  public last_balance!: number;
   // Asociaciones
   static associate() {
-    LoanPayment.belongsTo(Loan, { foreignKey: 'loan_id' });
+    LoanTransaction.belongsTo(Loan, { foreignKey: 'loan_id' });
   }
 }
 
 function init(sequelize: Sequelize): void {
-  LoanPayment.init(
+  LoanTransaction.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -42,6 +43,10 @@ function init(sequelize: Sequelize): void {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
+      disbursement_amount: {
+        type: DataTypes.DECIMAL(20, 2),
+        allowNull: false,
+      },
       last_balance: {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
@@ -49,10 +54,10 @@ function init(sequelize: Sequelize): void {
     },
     {
       sequelize,
-      modelName: 'loan_payment',
-      tableName: 'loanpayments',
+      modelName: 'loan_transaction',
+      tableName: 'loantransactions',
     }
   );
 }
 
-export { LoanPayment, init };
+export { LoanTransaction , init };

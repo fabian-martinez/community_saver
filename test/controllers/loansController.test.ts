@@ -5,7 +5,7 @@ import LoanController from '../../src/controllers/loansController';
 import { Request, Response } from "express";
 import LoanService from "../../src/services/loanService";
 
-import { allLoans, loansByMember, oldLoan } from '../testData';
+import { allLoans, loansByMember, oldLoan, paymentHistoric } from '../testData';
 import { NotFoundError } from "../../src/models/errors";
 
 describe('Loan Controller', () => {
@@ -190,5 +190,30 @@ describe('Loan Controller', () => {
         expect(getLoansStub.calledOnceWith('test')).to.be.true
 
         getLoansStub.restore();
+    });
+
+    it('should call to Loan service to get loan historic', async () => {
+        const getLoanStub = sinon.stub(loanService,'getLoanHistoric').resolves(paymentHistoric)
+
+        const req = { params : { "id":"test"}, query: {page:5, per_page:10} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(paymentHistoric);
+            },
+        };
+
+        await loanController.getLoanHistoric(req as unknown as Request,res as Response)
+        
+        expect(getLoanStub.calledOnceWith('test')).to.be.true
+
+        getLoanStub.restore();    
+    });
+
+    it('should call to Loan service to get no loan', async () => {
+        
     });
 });

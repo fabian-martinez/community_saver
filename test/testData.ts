@@ -3,8 +3,7 @@ import { initModels } from '../src/models/initModels';
 import { Loan } from '../src/models/loan';
 import { Member } from '../src/models/member';
 import { PaymentSchedule } from '../src/models/payment_schedule';
-import { LoanDisbursement } from '../src/models/loan_disbursement';
-import { LoanPayment } from '../src/models/loan_payment';
+import { LoanTransaction } from '../src/models/loan_transaction';
 
 
 const sequelize = new Sequelize({dialect: 'postgres'});
@@ -117,18 +116,29 @@ export const oldLoan = Loan.build({
     "loan_type": "OLD_LOAN"
 })
 
-export const loandDisbursements:LoanDisbursement[] = [
-    LoanDisbursement.build({ 'id': 1,'loan_id': 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,1,1),'disbursement_amount': 3000000, 'last_balance':3000000}),
-    LoanDisbursement.build({ 'id': 2,'loan_id': 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'disbursement_amount': 4000000, 'last_balance':7000000}),
-    LoanDisbursement.build({ 'id': 3,'loan_id': 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'disbursement_amount': 1806200, 'last_balance':8806200}),
+
+export const loanTransactions:LoanTransaction[] = [
+    LoanTransaction.build({ 'id': 1,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,1,1),'disbursement_amount': 3000000, 'last_balance':3000000}),
+    LoanTransaction.build({ 'id': 2,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'disbursement_amount': 4000000, 'last_balance':7000000}),
+    LoanTransaction.build({ 'id': 3,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'disbursement_amount': 1806200, 'last_balance':8806200}),
+    LoanTransaction.build({ 'id': 4,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'payment_amount':0      ,'interest_amount':45000 ,'last_balance':7000000 }),
+    LoanTransaction.build({ 'id': 5,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'payment_amount':0      ,'interest_amount':105000,'last_balance':8806200 }),
+    LoanTransaction.build({ 'id': 6,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,4,1),'payment_amount':806200 ,'interest_amount':132093,'last_balance':8000000 }),
+    LoanTransaction.build({ 'id': 7,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,5,1),'payment_amount':1600000,'interest_amount':120000,'last_balance':6400000 }),
 ]
 
-export const loanPayments:LoanPayment[] = [
-    LoanPayment.build({'id':1,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 2,1),'payment_amount':0      ,'interest_amount':45000 ,'last_balance':7000000 }),
-    LoanPayment.build({'id':2,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 3,1),'payment_amount':0      ,'interest_amount':105000,'last_balance':8806200 }),
-    LoanPayment.build({'id':3,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 4,1),'payment_amount':806200 ,'interest_amount':132093,'last_balance':8000000 }),
-    LoanPayment.build({'id':4,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date':new Date(2022, 5,1),'payment_amount':1600000,'interest_amount':120000,'last_balance':6400000 }),
-]
+export const rowAndCountData:any = {
+    count: 7,
+    rows: [
+        LoanTransaction.build({ 'id': 1,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,1,1),'disbursement_amount': 3000000, 'last_balance':3000000}),
+        LoanTransaction.build({ 'id': 2,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'disbursement_amount': 4000000, 'last_balance':7000000}),
+        LoanTransaction.build({ 'id': 3,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'disbursement_amount': 1806200, 'last_balance':8806200}),
+        LoanTransaction.build({ 'id': 4,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,2,1),'payment_amount':0      ,'interest_amount':45000 ,'last_balance':7000000 }),
+        LoanTransaction.build({ 'id': 5,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,3,1),'payment_amount':0      ,'interest_amount':105000,'last_balance':8806200 }),
+        LoanTransaction.build({ 'id': 6,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,4,1),'payment_amount':806200 ,'interest_amount':132093,'last_balance':8000000 }),
+        LoanTransaction.build({ 'id': 7,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,5,1),'payment_amount':1600000,'interest_amount':120000,'last_balance':6400000 }),
+    ]
+} 
 
 export const oldLoanWithPaymentsAndDisbursements:Loan = Loan.build({
     "id": 'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f',
@@ -139,22 +149,59 @@ export const oldLoanWithPaymentsAndDisbursements:Loan = Loan.build({
     "interest_rate": 0.0200,
     "loan_date": new Date(2022,5,1),
     "loan_type": "OLD_LOAN",
-    "loan_payments": loanPayments,
-    "loan_disbursements": loandDisbursements
+    "loan_transactions": LoanTransaction
 },{
-    include:[LoanPayment,LoanDisbursement]
+    include:[LoanTransaction]
 })
 
-export const paymentHistoric:PaymentSchedule = {
+export const paymentHistoric = {
+    records:[
+        {'id':5, 'date':new Date('1/05/22'),'capital':1600000, 'interest':	120000, 'balance':	6400000, 'state':	'PAID'    },
+        {'id':4, 'date':new Date('1/04/22'),'capital':806200,  'interest':	132093, 'balance':	8000000, 'state':	'PAID'    },
+        {'id':3, 'date':new Date('1/03/22'),'capital':0,       'interest':	105000, 'balance':	8806200, 'disbursement': 1806200, 'state':	'PAID'},
+        {'id':2, 'date':new Date('1/02/22'),'capital':0,       'interest':	45000,  'balance':	7000000, 'disbursement': 4000000, 'state':	'PAID'},
+        {'id':1, 'date':new Date('1/01/22'),'capital':0,       'interest':	0,      'balance':	3000000, 'disbursement': 3000000, 'state':	'PAID'},
+    ],
+    total: 5,
+    page: 1,
+    per_page: 5,
+    total_pages: 1,
+}
+
+export const paymentHistoricPage1 = {
     loan:oldLoan,
     payment_records:[
-        {'number':1, 'date':new Date('1/01/22'),'capital':0,       'interest':	0,      'balance':	3000000, 'disbursement': 3000000, 'state':	'PAID'},
-        {'number':2, 'date':new Date('1/02/22'),'capital':0,       'interest':	45000,  'balance':	7000000, 'disbursement': 4000000, 'state':	'PAID'},
-        {'number':3, 'date':new Date('1/03/22'),'capital':0,       'interest':	105000, 'balance':	8806200, 'disbursement': 1806200, 'state':	'PAID'},
-        {'number':4, 'date':new Date('1/04/22'),'capital':806200,  'interest':	132093, 'balance':	8000000, 'state':	'PAID'    },
+        {'id':5, 'date':new Date('1/05/22'),'capital':1600000, 'interest':	120000, 'balance':	6400000, 'state':	'PAID'    },
+        {'id':4, 'date':new Date('1/04/22'),'capital':806200,  'interest':	132093, 'balance':	8000000, 'state':	'PAID'    },
+    ],
+    "total": 5,
+    "page": 1,
+    "per_page": 2,
+    "total_pages": 3,
+} 
+
+export const paymentHistoricPage2 = {
+    loan:oldLoan,
+    payment_records:[
+        {'id':3, 'date':new Date('1/03/22'),'capital':0,       'interest':	105000, 'balance':	8806200, 'disbursement': 1806200, 'state':	'PAID'},
+        {'id':4, 'date':new Date('1/04/22'),'capital':806200,  'interest':	132093, 'balance':	8000000, 'state':	'PAID'    },
+    ],
+    "total": 5,
+    "page": 2,
+    "per_page": 2,
+    "total_pages": 3,
+} 
+
+export const paymentHistoricPage3 = {
+    loan:oldLoan,
+    payment_records:[
         {'number':5, 'date':new Date('1/05/22'),'capital':1600000, 'interest':	120000, 'balance':	6400000, 'state':	'PAID'    },
-    ]
-}    
+    ],
+    "total": 5,
+    "page": 3,
+    "per_page": 2,
+    "total_pages": 3,
+} 
 
 export const paymentScheduleToNewLoan:PaymentSchedule = {
     loan:newLoan,
