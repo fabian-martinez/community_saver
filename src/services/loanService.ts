@@ -56,7 +56,10 @@ class LoanService {
                 'loan_id':loanid
             },
             limit: pageSize,
-            offset: (pageNumber - 1) * pageSize
+            offset: (pageNumber - 1) * pageSize,
+            order: [
+                ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+          ],
         })
 
         if (rowAndCount.rows.length === 0) {
