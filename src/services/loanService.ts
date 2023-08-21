@@ -60,6 +60,7 @@ class LoanService {
             order: [
                 ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
           ],
+
         })
 
         if (rowAndCount.rows.length === 0) {
