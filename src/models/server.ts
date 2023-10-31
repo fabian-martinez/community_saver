@@ -10,7 +10,7 @@ class Server {
 	private app:Application
 	private port:string
 	private apiPath = {
-		loan: '/api/loan'
+		loans: '/api/v1/loans'
 	}
 
 	constructor() {
@@ -48,7 +48,7 @@ class Server {
 	}
 
 	routes() {
-		this.app.use(this.apiPath.loan, loansRouter)
+		this.app.use(this.apiPath.loans, loansRouter)
 	}
 
 	listen(){
