@@ -9,11 +9,12 @@ CREATE TABLE Loans (
     member_id uuid,
     original_amount DECIMAL(20),
     updated_amount DECIMAL(20),
-    monthly_payment_amount DECIMAL(20),
+    monthly_payment DECIMAL(20),
     interest_rate DECIMAL(5, 4),
-    loan_date DATE,
-    payment_date DATE,
+    created_at DECIMAL(20),
+    updated_at DECIMAL(20),
     loan_type VARCHAR(255),
+    state VARCHAR(255),
     FOREIGN KEY (member_id) REFERENCES Members(id)
 );
 
