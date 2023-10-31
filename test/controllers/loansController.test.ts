@@ -19,7 +19,7 @@ describe('Loan Controller', () => {
         loanController = new LoanController(loanService);
     });
 
-    it('should call to Loand service to get all loans in server', async () => {
+    it('should call to Loand service to get loans', async () => {
 
         const getLoansStub = sinon.stub(loanService,'getLoans').resolves(allLoans)
 
@@ -41,33 +41,11 @@ describe('Loan Controller', () => {
         getLoansStub.restore();
     });
 
-    it('should call to Loand service to get all loans of a member', async () => {
-
-        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByMember)
-
-        const req = { query: { "member_name" :'test'} }
-        const res = {
-            status: (statusCode: number) => {
-                expect(statusCode).to.equal(200);
-                return res;
-            },
-            json: (data: any) => {
-                expect(data).to.deep.equal(loansByMember);
-            },
-        };
-
-        await loanController.getLoans(req as unknown as Request,res as Response)
-        
-        expect(getLoansStub.calledOnceWith('test')).to.be.true
-
-        getLoansStub.restore();
-    });
-
-    it('should call to Loand service to get all loans of a type', async () => {
+    it('should call to Loand service to get loans with page', async () => {
 
         const getLoansStub = sinon.stub(loanService,'getLoans').resolves(allLoans)
 
-        const req = { query: { "loan_type" :'TEST_TYPE'} }
+        const req = { query: { "page":5 } }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
@@ -77,53 +55,32 @@ describe('Loan Controller', () => {
                 expect(data).to.deep.equal(allLoans);
             },
         };
-
-        await loanController.getLoans(req as unknown as Request,res as Response)
         
-        expect(getLoansStub.calledOnceWith(undefined,'TEST_TYPE')).to.be.true
+        await loanController.getLoans(req as unknown as Request,res as Response)
+
+        expect(getLoansStub.alwaysCalledWith(5)).to.be.true
 
         getLoansStub.restore();
     });
 
-    it('should call to Loand service to get all loans of a type a member', async () => {
+    it('should call to Loand service to get loans with per_page', async () => {
 
-        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(loansByMember)
+        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(allLoans)
 
-        const req = { query: { "member_name":"test", "loan_type" :'TEST_TYPE'} }
+        const req = { query: { "per_page":10 } }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
                 return res;
             },
             json: (data: any) => {
-                expect(data).to.deep.equal(loansByMember);
+                expect(data).to.deep.equal(allLoans);
             },
         };
-
-        await loanController.getLoans(req as unknown as Request,res as Response)
         
-        expect(getLoansStub.calledOnceWith('test','TEST_TYPE')).to.be.true
-
-        getLoansStub.restore();
-    });
-
-    it('should call to Loand service get no Loan', async () => {
-        const getLoansStub = sinon.stub(loanService,'getLoans').rejects(new NotFoundError("Error simulado"))
-
-        const req = { query: { "member_name":"test", "loan_type" :'TEST_TYPE'} }
-        const res = {
-            status: (statusCode: number) => {
-                expect(statusCode).to.equal(404);
-                return res;
-            },
-            json: (data: any) => {
-                expect(data).to.be.eql({ error: 'Error simulado' });
-            },
-        };
-
         await loanController.getLoans(req as unknown as Request,res as Response)
-        
-        expect(getLoansStub.calledOnceWith('test','TEST_TYPE')).to.be.true
+
+        expect(getLoansStub.alwaysCalledWith(undefined,10)).to.be.true
 
         getLoansStub.restore();
     });

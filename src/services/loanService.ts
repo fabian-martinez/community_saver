@@ -2,6 +2,7 @@ import { Member } from "../models/member";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
+import logger from "./loggerService";
 
 
 class LoanService {
@@ -17,27 +18,11 @@ class LoanService {
 
     }
     
-    public async getLoans(memberName?:string,loanType?:string):Promise<LoanModel[]> {
+    public async getLoans(number:number=1,per_page:number=10):Promise<LoanModel[]> {
         
         const whereClause: any = {};
 
-        if(loanType) {
-            whereClause.loan_type = loanType;
-        } 
-
-        if(memberName) {
-            const member = await Member.findOne({
-                where: {name:memberName},
-                include: {
-                    model: Loan,
-                    where: whereClause,
-                },
-            });
-            if (!member) {
-                throw new NotFoundError(`Member loan ${memberName} Not Found`)
-            }
-            return await member.get('loans') as Loan[];
-        }
+        logger.debug(`Number: ${number} and PerPage: ${per_page}`)
         
         const loans = await Loan.findAll({
             where: whereClause

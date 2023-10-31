@@ -13,9 +13,9 @@ class LoanController{
 
     public getLoans = async (req:Request, res:Response):Promise<void> => {
         try {
-            const memberName = req.query.member_name?.toString();
-            const loanType = req.query.loan_type?.toString();
-            const loans = await this.loanService.getLoans(memberName,loanType)
+            const page =  (req.query.page?.toString())?parseInt(req.query.page?.toString()):undefined;
+            const per_page = (req.query.per_page?.toString())?parseInt(req.query.per_page?.toString()):undefined;
+            const loans = await this.loanService.getLoans(page,per_page)
             res.status(200).json(loans)
         } catch (error) {
             if (error instanceof BadRequestError) {
