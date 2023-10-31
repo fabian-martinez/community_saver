@@ -7,22 +7,24 @@ interface LoanModel{
   member_id: typeof DataTypes.UUID;
   original_amount: number;
   updated_amount: number;
-  monthly_payment_amount: number;
+  monthly_payment: number;
   interest_rate: number;
-  loan_date: Date;
-  payment_date: Date;
+  created_at: number;
+  updated_at: number;
   loan_type: string;
+  state: string;
 } 
 class Loan extends Model implements LoanModel {
   public id!: typeof DataTypes.UUID;
   public member_id!: typeof DataTypes.UUID;
   public original_amount!: number;
   public updated_amount!: number;
-  public monthly_payment_amount!: number;
+  public monthly_payment!: number;
   public interest_rate!: number;
-  public loan_date!: Date;
-  public payment_date!: Date;
+  public created_at!: number;
+  public updated_at!: number;
   public loan_type!: string;
+  public state!: string;
 
   // Asociaciones
   static associate() {
@@ -55,7 +57,7 @@ function init(sequelize: Sequelize): void {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
-      monthly_payment_amount: {
+      monthly_payment: {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
@@ -63,15 +65,19 @@ function init(sequelize: Sequelize): void {
         type: DataTypes.DECIMAL(5, 4),
         allowNull: false,
       },
-      loan_date: {
+      created_at: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
-      payment_date: {
+      updated_at: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
       loan_type: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      state: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },

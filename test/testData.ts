@@ -15,10 +15,10 @@ export const allLoans:Loan[] = [
         "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
         "original_amount": 10000,
         "updated_amount": 1000,
-        "monthly_payment_amount": 0,
+        "monthly_payment": 0,
         "interest_rate": 0.0200,
-        "loan_date": new Date(2022,1,1),
-        "payment_date": new Date(2022,1,1),
+        "created_at": new Date(2022,1,1),
+        "updated_at": new Date(2022,1,1),
         "loan_type": "ACCION"
     }),
     Loan.build({
@@ -26,10 +26,10 @@ export const allLoans:Loan[] = [
         "member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',
         "original_amount": 4200000,
         "updated_amount": 4200000,
-        "monthly_payment_amount": 0,
+        "monthly_payment": 0,
         "interest_rate": 0.0200,
-        "loan_date": new Date(2022,1,1),
-        "payment_date": new Date(2022,1,1),
+        "created_at": new Date(2022,1,1),
+        "updated_at": new Date(2022,1,1),
         "loan_type": "AGIL"
     })
 ]
@@ -40,10 +40,10 @@ export const loansByMember:Loan[] = [
         "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
         "original_amount": 10000,
         "updated_amount": 1000,
-        "monthly_payment_amount": 0,
+        "monthly_payment": 0,
         "interest_rate": 0.0200,
-        "loan_date": new Date(2022,1,1),
-        "payment_date": new Date(2022,1,1),
+        "created_at": new Date(2022,1,1),
+        "updated_at": new Date(2022,1,1),
         "loan_type": "ACCION"
     }),
     Loan.build({
@@ -51,10 +51,10 @@ export const loansByMember:Loan[] = [
         "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
         "original_amount": 4200000,
         "updated_amount": 4200000,
-        "monthly_payment_amount": 0,
+        "monthly_payment": 0,
         "interest_rate": 0.0200,
-        "loan_date": new Date(2022,1,1),
-        "payment_date": new Date(2022,1,1),
+        "created_at": new Date(2022,1,1),
+        "updated_at": new Date(2022,1,1),
         "loan_type": "AGIL"
     })
 ]
@@ -65,10 +65,10 @@ export const agilLoanByMember = [
         "member_id": 1,
         "original_amount": 4200000,
         "updated_amount": 4200000,
-        "monthly_payment_amount": 0,
+        "monthly_payment": 0,
         "interest_rate": 0.0200,
-        "loan_date": new Date(2022,1,1),
-        "payment_date": new Date(2022,1,1),
+        "created_at": new Date(2022,1,1),
+        "updated_at": new Date(2022,1,1),
         "loan_type": "AGIL"
     })
 ]
@@ -99,9 +99,9 @@ export const newLoan = Loan.build({
     "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
     "original_amount": 8806200,
     'updated_amount': 8806200,
-    "monthly_payment_amount": 200000,
+    "monthly_payment": 200000,
     "interest_rate": 0.0200,
-    "loan_date": new Date(2022,1,1),
+    "created_at": new Date(2022,1,1),
     "loan_type": "NEW_LOAN"
 })
 
@@ -110,9 +110,9 @@ export const oldLoan = Loan.build({
     "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
     "original_amount": 8806200,
     'updated_amount': 6400000,
-    "monthly_payment_amount": 200000,
+    "monthly_payment": 200000,
     "interest_rate": 0.0200,
-    "loan_date": new Date(2022,5,1),
+    "created_at": new Date(2022,5,1),
     "loan_type": "OLD_LOAN"
 })
 
@@ -145,9 +145,9 @@ export const oldLoanWithPaymentsAndDisbursements:Loan = Loan.build({
     "member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',
     "original_amount": 8806200,
     'updated_amount': 6400000,
-    "monthly_payment_amount": 200000,
+    "monthly_payment": 200000,
     "interest_rate": 0.0200,
-    "loan_date": new Date(2022,5,1),
+    "created_at": new Date(2022,5,1),
     "loan_type": "OLD_LOAN",
     "loan_transactions": LoanTransaction
 },{
