@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestParamHandler, Response } from "express";
 import LoanService from '../services/loanService';
 import logger from "../services/loggerService";
 import { BadRequestError, NotFoundError } from "../models/errors";
@@ -13,9 +13,9 @@ class LoanController{
 
     public getLoans = async (req:Request, res:Response):Promise<void> => {
         try {
-            const memberName = req.query.member_name?.toString();
-            const loanType = req.query.loan_type?.toString();
-            const loans = await this.loanService.getLoans(memberName,loanType)
+            const page:number =  Number(req.query.page);
+            const per_page:number = Number(req.query.per_page);
+            const loans = await this.loanService.getLoans({page,per_page})
             res.status(200).json(loans)
         } catch (error) {
             if (error instanceof BadRequestError) {
@@ -50,10 +50,10 @@ class LoanController{
     }
     public getLoanHistoric =async (req:Request, res:Response) => {
         try {
-            const loanId:string = req.params.id
-            const page:number = parseInt(req.query.page!.toString())
-            const per_page:number = parseInt(req.query.per_page!.toString())
-            const response = await this.loanService.getLoanHistoric(loanId,page,per_page);
+            const loan_id:string = req.params.id
+            const page:number = Number(req.query.page)
+            const per_page:number = Number(req.query.per_page)
+            const response = await this.loanService.getLoanHistoric(loan_id,{page,per_page});
             res.status(200).json(response)
         } catch (error) {
             if (error instanceof BadRequestError) {

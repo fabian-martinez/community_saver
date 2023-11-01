@@ -6,6 +6,7 @@ import { PaymentSchedule } from '../src/models/payment_schedule';
 import { LoanTransaction } from '../src/models/loan_transaction';
 
 
+
 const sequelize = new Sequelize({dialect: 'postgres'});
 initModels(sequelize)
         
@@ -33,6 +34,26 @@ export const allLoans:Loan[] = [
         "loan_type": "AGIL"
     })
 ]
+
+export const findAndCountAllLoans:any = {
+    count:30,
+    rows:[
+        Loan.build({"id": '17dcf876d-1840-4be8-aee0-3a4734d2d44',"member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',"original_amount": 10000,"updated_amount": 1000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "ACCION"}),
+        Loan.build({"id": '2ddbb5d48-9c47-46ea-a7df-3be17db984c9',"member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',"original_amount": 4200000,"updated_amount": 4200000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "AGIL"}),
+        Loan.build({"id": '3f7dcf876-1840-4be8-aee0-3a4734d2d44',"member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',"original_amount": 10000,"updated_amount": 1000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "ACCION"}),
+        Loan.build({"id": '4ddbb5d48-9c47-46ea-a7df-3be17db984c9',"member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',"original_amount": 4200000,"updated_amount": 4200000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "AGIL"}),
+        Loan.build({"id": '5f7dcf876-1840-4be8-aee0-3a4734d2d44',"member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',"original_amount": 10000,"updated_amount": 1000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "ACCION"}),
+        Loan.build({"id": '6ddbb5d48-9c47-46ea-a7df-3be17db984c9',"member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',"original_amount": 4200000,"updated_amount": 4200000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "AGIL"}),
+        Loan.build({"id": '7f7dcf876-1840-4be8-aee0-3a4734d2d44',"member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',"original_amount": 10000,"updated_amount": 1000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "ACCION"}),
+        Loan.build({"id": '8ddbb5d48-9c47-46ea-a7df-3be17db984c9',"member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',"original_amount": 4200000,"updated_amount": 4200000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "AGIL"}),
+        Loan.build({"id": '9f7dcf876-1840-4be8-aee0-3a4734d2d44',"member_id": 'a8f6bb2c-64f2-4728-a110-575ee3e9fa28',"original_amount": 10000,"updated_amount": 1000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "ACCION"}),
+        Loan.build({"id": '00dbb5d48-9c47-46ea-a7df-3be17db984c9',"member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',"original_amount": 4200000,"updated_amount": 4200000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "AGIL"}),
+    ]
+}
+export const findAndCountAllEmptyLoans:any = {
+    count:0,
+    rows:[]
+}
 
 export const loansByMember:Loan[] = [
     Loan.build({
