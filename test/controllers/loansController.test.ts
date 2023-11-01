@@ -58,7 +58,7 @@ describe('Loan Controller', () => {
         
         await loanController.getLoans(req as unknown as Request,res as Response)
 
-        expect(getLoansStub.alwaysCalledWith(5)).to.be.true
+        expect(getLoansStub.alwaysCalledWith({page:5,per_page:NaN})).to.be.true
 
         getLoansStub.restore();
     });
@@ -80,14 +80,14 @@ describe('Loan Controller', () => {
         
         await loanController.getLoans(req as unknown as Request,res as Response)
 
-        expect(getLoansStub.alwaysCalledWith(undefined,10)).to.be.true
+        expect(getLoansStub.alwaysCalledWith({page:NaN,per_page:10})).to.be.true
 
         getLoansStub.restore();
     });
 
     it('should throw an error when call to Loand service fail', async () => {
 
-        const getLoansStub = sinon.stub(loanService,'getLoans').rejects(new Error("Error simulado"))
+        const getLoansStub = sinon.stub(loanService,'getLoans').rejects( new Error("Error simulado"))
 
         const req = { query: {} }
         const res = {

@@ -1,4 +1,3 @@
-import { Member } from "../models/member";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
@@ -6,6 +5,10 @@ import logger from "./loggerService";
 
 
 class LoanService {
+
+    DEFAULT_PAGE=1
+    DEFAULT_PER_PAGE=10
+
     public async getLoan(loan_id: string):Promise<Loan> {
         const loan = await Loan.findByPk(loan_id)
 
@@ -18,45 +21,56 @@ class LoanService {
 
     }
     
-    public async getLoans(number:number=1,per_page:number=10):Promise<LoanModel[]> {
-        
+    public async getLoans(pagination:{page:number,per_page:number}):Promise<any> {
+        const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
+        const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
         const whereClause: any = {};
-
-        logger.debug(`Number: ${number} and PerPage: ${per_page}`)
-        
-        const loans = await Loan.findAll({
-            where: whereClause
-        })
-
-        if (loans.length === 0) {
-            throw new NotFoundError("Loan Not Found")
-        }
-        
-        return loans
-    }
-
-    public async getLoanHistoric(loanid:string,pageNumber:number,pageSize:number):Promise<any> {
-        const rowAndCount = await LoanTransaction.findAndCountAll({
-            where:{
-                'loan_id':loanid
-            },
-            limit: pageSize,
-            offset: (pageNumber - 1) * pageSize,
+        const rowAndCount = await Loan.findAndCountAll({
+            where:{},
+            limit: per_page,
+            offset: (page - 1) * per_page,
             order: [
-                ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+                ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
           ],
-
         })
 
         if (rowAndCount.rows.length === 0) {
-            throw new NotFoundError(`Loan with id ${loanid} Not Found Historic`)
+            throw new NotFoundError("Loan Not Found")
+        }
+        
+        const response = {
+            'total':rowAndCount.count,
+            'page':page,
+            'per_page':per_page,
+            'total_pages':Math.ceil(rowAndCount.count/per_page),
+            'items':rowAndCount.rows
+        }
+
+        return response;
+    }
+
+    public async getLoanHistoric(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
+
+        const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
+        const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
+        const rowAndCount = await LoanTransaction.findAndCountAll({
+            where:{
+                'loan_id':loan_id
+            },
+            limit: per_page,
+            offset: (page - 1) * per_page,
+            order: [['date', 'DESC'],]
+        });
+
+        if (rowAndCount.rows.length === 0) {
+            throw new NotFoundError(`Loan with id ${loan_id} Not Found Historic`)
         }
 
         const response = {
             'total':rowAndCount.count,
-            'page':pageNumber,
-            'per_page':pageSize,
-            'total_pages':Math.ceil(rowAndCount.count/pageSize),
+            'page':page,
+            'per_page':per_page,
+            'total_pages':Math.ceil(rowAndCount.count/per_page),
             'records':rowAndCount.rows
         }
 

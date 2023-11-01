@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+
 import { Loan } from "../../src/models/loan";
-import { Member } from '../../src/models/member';
 
 import LoanService from "../../src/services/loanService"
 
@@ -16,42 +16,64 @@ import {
     loansByMember,
     oldLoan,
     paymentHistoric,
-    rowAndCountData
+    rowAndCountData,
+    findAndCountAllLoans,
+    findAndCountAllEmptyLoans
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
+import logger from '../../src/services/loggerService';
+import { NotFoundError } from '../../src/models/errors';
 
 
 
 describe('LoanService', () => {
 
     let loanService: LoanService;
+
+    const DEFAULT_FILTER_LOANS:any = {
+        where:{},
+        limit: 10,
+        offset: (1 - 1) * 10,
+        order: [
+            ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+      ],
+    }
+
+    const DEFAULT_FILTER_LOAN_HISTORIC:any = {
+        where:{ 'loan_id':'test' },
+        limit: 10,
+        offset: (1 - 1) * 10,
+        order: [
+            ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+      ],
+    }
     
     beforeEach(() => {
         loanService = new LoanService();
     });
     
-    it('should get all loans', async () => {
+    it('should get loans with default configuration', async () => {
 
-        const findAllStub = sinon.stub(Loan, 'findAll').resolves(allLoans);
+        const findAndCountAllStub = sinon.stub(Loan, 'findAndCountAll').resolves(findAndCountAllLoans);
         
-        const response = await loanService.getLoans();
+        const response = await loanService.getLoans({page:NaN,per_page:NaN});
         
-        expect(response).to.be.an('array')
-        expect(response).have.lengthOf(2)
-        expect(response).to.eql(allLoans)
-        expect(findAllStub.calledOnce).to.be.true
+        expect(findAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOANS)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
 
-        findAllStub.restore();
+        findAndCountAllStub.restore();
     });
     
     
     it('should throw an error when no Loans', async () => {
         
-        const findAllStub = sinon.stub(Loan, 'findAll').resolves([]);
+        const findAllStub = sinon.stub(Loan, 'findAndCountAll').resolves(findAndCountAllEmptyLoans);
         try {
-            await loanService.getLoans();
+            await loanService.getLoans({page:NaN,per_page:NaN});
         } catch (error) {
-            if (error instanceof Error) {
+            if (error instanceof NotFoundError) {
                 expect(error.message).to.equal(`Loan Not Found`)
             }else{
                 console.error('Unexpected error', error)
@@ -80,7 +102,7 @@ describe('LoanService', () => {
         try {
             await loanService.getLoan('test');
         } catch (error) {
-            if (error instanceof Error) {
+            if (error instanceof NotFoundError) {
                 expect(error.message).to.equal(`Loan with id test Not Found`)
             }else{
                 console.error('Unexpected error', error)
@@ -89,15 +111,14 @@ describe('LoanService', () => {
 
         findByPkStub.restore();
     });
-    
-    it('should get loan historic by id', async () => {
-        const findAndCountAllStub = sinon.stub(LoanTransaction, 'findAndCountAll').resolves(rowAndCountData);
 
-        const filter = {where:{loan_id:'test'},limit: 10,offset: 0}
         
-        const response = await loanService.getLoanHistoric('test',1,10);
+    it('should get loan historic by id with default pagination', async () => {
+        const findAndCountAllStub = sinon.stub(LoanTransaction, 'findAndCountAll').resolves(rowAndCountData);
+        
+        const response = await loanService.getLoanHistoric('test',{page:NaN,per_page:NaN});
 
-        expect(findAndCountAllStub.calledOnceWith(filter)).to.be.true;
+        expect(findAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOAN_HISTORIC)).to.be.true;
         expect(response.records).to.be.an('array')
         expect(response.total).to.equal(7)
         expect(response.page).to.equal(1)
