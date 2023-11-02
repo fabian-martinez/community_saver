@@ -21,10 +21,17 @@ class LoanService {
 
     }
     
-    public async getLoans(pagination:{page:number,per_page:number}):Promise<any> {
+    public async getLoans(pagination:{page:number,per_page:number},filter?:any):Promise<any> {
+        
+        let whereClause: any = {};
+        
         const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
         const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
-        const whereClause: any = {};
+        
+        if(filter){
+            whereClause = this.buildFilter(filter)
+        }
+
         const rowAndCount = await Loan.findAndCountAll({
             where:{},
             limit: per_page,
@@ -75,6 +82,10 @@ class LoanService {
         }
 
         return response;
+    }
+
+    private buildFilter(filter:any):any {
+
     }
 }
 

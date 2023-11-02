@@ -36,7 +36,7 @@ describe('Loan Controller', () => {
         
         await loanController.getLoans(req as Request,res as Response)
 
-        expect(getLoansStub.calledOnce).to.be.true
+        expect(getLoansStub.calledOnceWith({page:NaN,per_page:NaN})).to.be.true
 
         getLoansStub.restore();
     });
@@ -81,6 +81,48 @@ describe('Loan Controller', () => {
         await loanController.getLoans(req as unknown as Request,res as Response)
 
         expect(getLoansStub.alwaysCalledWith({page:NaN,per_page:10})).to.be.true
+
+        getLoansStub.restore();
+    });
+
+    it('should call to Loand service to get loans with a filter', async () => {
+
+        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(allLoans)
+
+        const req = { query: {"filter":"member_id:eq:a8f6bb2c-64f2-4728-a110-575ee3e9fa28"} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(allLoans);
+            },
+        };
+        
+        await loanController.getLoans(req as unknown as Request,res as Response)
+
+        expect(getLoansStub.calledOnceWith({page:NaN,per_page:NaN},{attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"})).to.be.true
+
+        getLoansStub.restore();
+    });
+
+    it('should throw an error when get loans with invalid filter', async () => {
+
+        const getLoansStub = sinon.stub(loanService,'getLoans').resolves(allLoans)
+
+        const req = { query: {"filter":"member_id:a8f6bb2c-64f2-4728-a110-575ee3e9fa28otrovalor"}}
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(400);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.be.eql({ error: 'Invalid Filter' });
+            },
+        };
+
+        expect(getLoansStub.calledOnce).to.be.false
 
         getLoansStub.restore();
     });
