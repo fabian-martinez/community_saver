@@ -36,7 +36,6 @@ class LoanController{
     public getLoan = async (req:Request, res:Response):Promise<void> => {
         try {
             const loanId:string = req.params.id
-            logger.info(loanId)
             const loan = await this.loanService.getLoan(loanId);
             res.status(200).json(loan)
         } catch (error) {
