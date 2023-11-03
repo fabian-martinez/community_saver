@@ -15,7 +15,7 @@ const db = new Sequelize(
 	{
 		host: DB_HOST,
 		dialect: 'postgres',
-		//logging: false
+		logging: false,
 		define: {
 			timestamps: false
 		}

@@ -30,10 +30,7 @@ class MemberService {
         const rowAndCount = await Member.findAndCountAll({
             where:whereClause,
             limit: per_page,
-            offset: (page - 1) * per_page,
-            order: [
-                ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-          ],
+            offset: (page - 1) * per_page
         })
 
         if (rowAndCount.rows.length === 0) {

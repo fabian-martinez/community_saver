@@ -312,10 +312,7 @@ export const FILTER_MEMBERS_EQ:any = {
     where: [{name: { [Op.eq]: "Member Name" }}]
     ,
     limit: 10,
-    offset: (1 - 1) * 10,
-    order: [
-        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-  ],
+    offset: (1 - 1) * 10
 }
 
 export const FILTER_LOANS_GT:any = {
