@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { NotFoundError } from "../models/errors";
+import { NotFoundError } from "../helpers/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
 import logger from "../helpers/loggerService";

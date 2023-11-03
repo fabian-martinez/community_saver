@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import { init as initMember } from './member';
-import { init as initLoan } from './loan';
-import { init as initLoanTransaction } from './loan_transaction';
+import { init as initMember } from '../models/member';
+import { init as initLoan } from '../models/loan';
+import { init as initLoanTransaction } from '../models/loan_transaction';
 
 export function initModels(sequelize: Sequelize): void {
   initMember(sequelize);
