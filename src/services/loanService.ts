@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
-import logger from "./loggerService";
+import logger from "../helpers/loggerService";
 
 
 class LoanService {

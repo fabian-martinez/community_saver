@@ -1,9 +1,9 @@
 import express, { Application } from "express";
 import loansRouter from '../routes/loans';
 import cors from 'cors';
-import db from "../database/db";
-import { initModels } from "./initModels";
-import logger from "../services/loggerService";
+import db from "./databaseConfig";
+import { initModels } from "../models/initModels";
+import logger from "../helpers/loggerService";
 
 class Server {
 

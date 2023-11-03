@@ -21,7 +21,7 @@ import {
     FILTER_LOANS_EQ_AND_GT
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
-import logger from '../../src/services/loggerService';
+import logger from '../../src/helpers/loggerService';
 import { NotFoundError } from '../../src/models/errors';
 
 
