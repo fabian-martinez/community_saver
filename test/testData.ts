@@ -3,7 +3,6 @@ import { Op } from 'sequelize';
 import { initModels } from '../src/config/initModels';
 import { Loan } from '../src/models/loan';
 import { Member } from '../src/models/member';
-import { PaymentSchedule } from '../src/models/payment_schedule';
 import { LoanTransaction } from '../src/models/loan_transaction';
 
 
@@ -138,6 +137,11 @@ export const oldLoan = Loan.build({
     "loan_type": "OLD_LOAN"
 })
 
+export const member = Member.build({
+    member_id:"member_id",
+    name:"Member Name"
+})
+
 
 export const loanTransactions:LoanTransaction[] = [
     LoanTransaction.build({ 'id': 1,'loan_id':'e2c2aefe-0ab1-48f8-b99a-f0faa011ea4f','date': new Date(2022,1,1),'disbursement_amount': 3000000, 'last_balance':3000000}),
@@ -225,7 +229,7 @@ export const paymentHistoricPage3 = {
     "total_pages": 3,
 } 
 
-export const paymentScheduleToNewLoan:PaymentSchedule = {
+export const paymentScheduleToNewLoan:any = {
     loan:newLoan,
     payment_records:[
         {'number':1, 'date':new Date('1/01/22'),'capital':806200, 'interest':	176124, 'balance':	8000000, 'state':	'PENNDING'},
@@ -305,3 +309,17 @@ export const DEFAULT_FILTER_LOAN_HISTORIC:any = {
         ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
   ],
 }
+
+export const allMembers:Member[] = [
+    Member.build({id:"memberid1",name:"Member Numero 1"}),
+    Member.build({id:"memberid2",name:"Member Numero 2"}),
+    Member.build({id:"memberid3",name:"Member Numero 3"}),
+    Member.build({id:"memberid4",name:"Member Numero 4"}),
+    Member.build({id:"memberid5",name:"Member Numero 5"}),
+    Member.build({id:"memberid6",name:"Member Numero 6"}),
+    Member.build({id:"memberid7",name:"Member Numero 7"}),
+    Member.build({id:"memberid8",name:"Member Numero 8"}),
+    Member.build({id:"memberid9",name:"Member Numero 9"}),
+    Member.build({id:"memberid10",name:"Member Numero 10"}),
+    Member.build({id:"memberid11",name:"Member Numero 11"}),
+]

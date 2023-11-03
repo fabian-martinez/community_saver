@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import LoanController from '../controllers/loansController';
+import LoanController from '../controllers/loanController';
 import LoanService from '../services/loanService';
 import logger from '../helpers/loggerService';
 

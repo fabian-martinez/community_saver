@@ -1,20 +1,19 @@
 import { expect } from "chai";
 import sinon, { SinonStub } from "sinon";
 
-import LoanController from '../../src/controllers/loansController';
+import LoanController from '../../src/controllers/loanController';
 import { Request, Response } from "express";
 import LoanService from "../../src/services/loanService";
 
-import { allLoans, loansByMember, oldLoan, paymentHistoric } from '../testData';
+import { allLoans, oldLoan, paymentHistoric } from '../testData';
 import { NotFoundError } from "../../src/helpers/errors";
-import Sinon from "sinon";
 
 describe('Loan Controller', () => {
 
     let loanController: LoanController;
     let loanService: LoanService;
-    let getLoansStub:Sinon.SinonStub;
-    let getLoanStub:Sinon.SinonStub;
+    let getLoansStub:SinonStub;
+    let getLoanStub:SinonStub;
     let getLoanTransactionsStub:SinonStub
 
     beforeEach(() => {
@@ -252,9 +251,5 @@ describe('Loan Controller', () => {
         
         expect(getLoanTransactionsStub.calledOnceWith('test')).to.be.true
     
-    });
-
-    it('should call to Loan service to get no loan', async () => {
-        
     });
 });
