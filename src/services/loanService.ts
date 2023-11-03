@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
@@ -21,12 +22,19 @@ class LoanService {
 
     }
     
-    public async getLoans(pagination:{page:number,per_page:number}):Promise<any> {
+    public async getLoans(pagination:{page:number,per_page:number},filter?:any[]):Promise<any> {
+        
+        let whereClause: any = {};
+        
         const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
         const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
-        const whereClause: any = {};
+        
+        if(filter){
+            whereClause = this.buildFilter(filter)
+        }
+
         const rowAndCount = await Loan.findAndCountAll({
-            where:{},
+            where:whereClause,
             limit: per_page,
             offset: (page - 1) * per_page,
             order: [
@@ -49,7 +57,7 @@ class LoanService {
         return response;
     }
 
-    public async getLoanHistoric(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
+    public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
 
         const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
         const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
@@ -75,6 +83,24 @@ class LoanService {
         }
 
         return response;
+    }
+
+    private buildFilter(filters:any[]):any {
+        return filters.map((filter:any) => {
+            const { attribute, operation, value } = filter;
+            if(operation === 'eq')
+                return { 
+                    [attribute] : {
+                        [Op.eq]:value
+                    }
+                };
+            if(operation === 'gt')
+                return {
+                    [attribute] : {
+                        [Op.gt]:value
+                    }
+                }
+        });
     }
 }
 

@@ -15,10 +15,12 @@ class LoanController{
         try {
             const page:number =  Number(req.query.page);
             const per_page:number = Number(req.query.per_page);
-            const loans = await this.loanService.getLoans({page,per_page})
+            const filter = this.validateFilter(req.query.filter);
+            const loans = await this.loanService.getLoans({page,per_page},filter)
             res.status(200).json(loans)
         } catch (error) {
             if (error instanceof BadRequestError) {
+                logger.error(error)
                 res.status(error.code).json({ error: error.message });
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
@@ -53,7 +55,7 @@ class LoanController{
             const loan_id:string = req.params.id
             const page:number = Number(req.query.page)
             const per_page:number = Number(req.query.per_page)
-            const response = await this.loanService.getLoanHistoric(loan_id,{page,per_page});
+            const response = await this.loanService.getLoanTransactions(loan_id,{page,per_page});
             res.status(200).json(response)
         } catch (error) {
             if (error instanceof BadRequestError) {
@@ -74,6 +76,25 @@ class LoanController{
     }
     public putDisburtsement = async (req:Request, res:Response):Promise<void> => {
         res.json("Por implementar")
+    }
+
+    private validateFilter = (filterParams:any):any => {
+      
+      if(!filterParams){
+        return undefined
+      }
+      
+      const filters = filterParams.split(',');
+
+      return filters.map((filterParam:any) => {
+        const [attribute, operation, value] = filterParam.split(':');
+
+        if (operation && value) {
+          return { attribute, operation, value };
+        } else {
+          throw new Error('Estructura de filtro incorrecta');
+        }
+      });
     }
 }
 

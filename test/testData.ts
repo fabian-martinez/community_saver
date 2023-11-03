@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import { Op } from 'sequelize';
 import { initModels } from '../src/models/initModels';
 import { Loan } from '../src/models/loan';
 import { Member } from '../src/models/member';
@@ -237,4 +238,70 @@ export const paymentScheduleToNewLoan:PaymentSchedule = {
         {'number':8, 'date':new Date('7/02/22'),'capital':1000000, 'interest':	40000, 'balance':	1000000, 'state':	'PENNDING'},
         {'number':9, 'date':new Date('8/02/22'),'capital':1000000, 'interest':	20000, 'balance':	0, 'state':	'PENNDING'},
     ]
-}    
+}
+
+ export const DEFAULT_FILTER_LOANS:any = {
+    where:{},
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const WITH_PAGE_FILTER_LOANS:any = {
+    where:{},
+    limit: 10,
+    offset: (2 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const WITH_PER_PAGE_FILTER_LOANS:any = {
+    where:{},
+    limit: 7,
+    offset: (1 - 1) * 7,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const FILTER_LOANS_EQ:any = {
+    where: [{member_id: { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" }}]
+    ,
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const FILTER_LOANS_GT:any = {
+    where: [{created_at: { [Op.gt]: "1684472400" }}],
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+export const FILTER_LOANS_EQ_AND_GT:any = {
+    where: [
+        {member_id: { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" }},
+        {created_at: { [Op.gt]: "1684472400" }}
+    ],
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const DEFAULT_FILTER_LOAN_HISTORIC:any = {
+    where:{ 'loan_id':'test' },
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}

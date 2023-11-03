@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import sinon, { SinonStub } from 'sinon';
 
 
 import { Loan } from "../../src/models/loan";
@@ -8,17 +8,17 @@ import LoanService from "../../src/services/loanService"
 
 
 import { 
-    agilLoanByMember, 
-    allLoans, 
-    memberWithATypeLoan, 
-    memberWithTwoLoans, 
-    memberWithoutLoans,
-    loansByMember,
     oldLoan,
-    paymentHistoric,
     rowAndCountData,
     findAndCountAllLoans,
-    findAndCountAllEmptyLoans
+    findAndCountAllEmptyLoans,
+    DEFAULT_FILTER_LOANS,
+    DEFAULT_FILTER_LOAN_HISTORIC,
+    WITH_PAGE_FILTER_LOANS,
+    WITH_PER_PAGE_FILTER_LOANS,
+    FILTER_LOANS_EQ,
+    FILTER_LOANS_GT,
+    FILTER_LOANS_EQ_AND_GT
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
 import logger from '../../src/services/loggerService';
@@ -29,47 +29,122 @@ import { NotFoundError } from '../../src/models/errors';
 describe('LoanService', () => {
 
     let loanService: LoanService;
-
-    const DEFAULT_FILTER_LOANS:any = {
-        where:{},
-        limit: 10,
-        offset: (1 - 1) * 10,
-        order: [
-            ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-      ],
-    }
-
-    const DEFAULT_FILTER_LOAN_HISTORIC:any = {
-        where:{ 'loan_id':'test' },
-        limit: 10,
-        offset: (1 - 1) * 10,
-        order: [
-            ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-      ],
-    }
     
+    // Define Stubs
+    let findLoansAndCountAllStub:SinonStub
+    let findLoansTransactionsAndCountAllStub:SinonStub
+    let findLoanHistoricByPkStub:SinonStub
+
     beforeEach(() => {
         loanService = new LoanService();
+
+        //Inicialize Stubs
+        findLoansAndCountAllStub = sinon.stub(Loan, 'findAndCountAll');
+        findLoansTransactionsAndCountAllStub = sinon.stub(LoanTransaction, 'findAndCountAll');
+        findLoanHistoricByPkStub = sinon.stub(Loan, 'findByPk');
     });
+
+    afterEach(() => {
+        // Clean Stubs
+        findLoansAndCountAllStub.restore();
+        findLoansTransactionsAndCountAllStub.restore();
+        findLoanHistoricByPkStub.restore();
+    })
+
     
     it('should get loans with default configuration', async () => {
 
-        const findAndCountAllStub = sinon.stub(Loan, 'findAndCountAll').resolves(findAndCountAllLoans);
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
         
         const response = await loanService.getLoans({page:NaN,per_page:NaN});
         
-        expect(findAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOANS)).to.be.true
+        expect(findLoansAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOANS)).to.be.true
         expect(response.items).to.be.an('array')
         expect(response.items).have.lengthOf(10)
         expect(response.items).to.eql(findAndCountAllLoans.rows)
 
-        findAndCountAllStub.restore();
     });
-    
+
+    it('should get loans with page', async () => {
+
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
+        
+        const response = await loanService.getLoans({page:2,per_page:NaN});
+        
+        expect(findLoansAndCountAllStub.calledOnceWith(WITH_PAGE_FILTER_LOANS)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
+
+    });
+
+    it('should get loans with per_page', async () => {
+
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
+        
+        const response = await loanService.getLoans({page:NaN,per_page:7});
+        
+        expect(findLoansAndCountAllStub.calledOnceWith(WITH_PER_PAGE_FILTER_LOANS)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
+
+    });
+
+    it('should get loans with a eq filter', async () => {
+
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
+        
+        const response = await loanService.getLoans(
+                {page:NaN,per_page:NaN},
+                [{attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"}]
+            );
+        
+        expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_EQ)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
+
+    });
+
+    it('should get loans with a gt filter', async () => {
+
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
+        
+        const response = await loanService.getLoans(
+                {page:NaN,per_page:NaN},
+                [{attribute:"created_at",operation:"gt",value:"1684472400"}]
+            );
+        
+        expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_GT)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
+
+    });
+
+    it('should get loans with a eq,gt filter', async () => {
+
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
+        
+        const response = await loanService.getLoans(
+                {page:NaN,per_page:NaN},
+                [
+                    {attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"},
+                    {attribute:"created_at",operation:"gt",value:"1684472400"}
+                ]
+            );
+        
+        expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_EQ_AND_GT)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
+
+    });
     
     it('should throw an error when no Loans', async () => {
         
-        const findAllStub = sinon.stub(Loan, 'findAndCountAll').resolves(findAndCountAllEmptyLoans);
+        findLoansAndCountAllStub.resolves(findAndCountAllEmptyLoans);
         try {
             await loanService.getLoans({page:NaN,per_page:NaN});
         } catch (error) {
@@ -80,24 +155,22 @@ describe('LoanService', () => {
             }
         }
 
-        findAllStub.restore();
     });
 
     it('should get loan by id', async () => {
         
-        const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(oldLoan);
+        findLoanHistoricByPkStub.resolves(oldLoan);
         
         const loan:Loan = await loanService.getLoan('test');
     
 
-        expect(findByPkStub.calledOnceWith('test')).to.be.true;
+        expect(findLoanHistoricByPkStub.calledOnceWith('test')).to.be.true;
         expect(JSON.stringify(oldLoan)).to.eql(JSON.stringify(loan))
 
-        findByPkStub.restore();
     });
 
     it('should get loan by id no loan', async () => {
-        const findByPkStub = sinon.stub(Loan, 'findByPk').resolves(undefined);
+        findLoanHistoricByPkStub.resolves(undefined);
         
         try {
             await loanService.getLoan('test');
@@ -109,16 +182,15 @@ describe('LoanService', () => {
             }
         }
 
-        findByPkStub.restore();
     });
 
         
     it('should get loan historic by id with default pagination', async () => {
-        const findAndCountAllStub = sinon.stub(LoanTransaction, 'findAndCountAll').resolves(rowAndCountData);
+        findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
         
-        const response = await loanService.getLoanHistoric('test',{page:NaN,per_page:NaN});
+        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:NaN});
 
-        expect(findAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOAN_HISTORIC)).to.be.true;
+        expect(findLoansTransactionsAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOAN_HISTORIC)).to.be.true;
         expect(response.records).to.be.an('array')
         expect(response.total).to.equal(7)
         expect(response.page).to.equal(1)
@@ -126,7 +198,6 @@ describe('LoanService', () => {
         expect(response.total_pages).to.equal(1)
         expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
 
-        findAndCountAllStub.restore();
     });
     
     // it('should get payment schedule when the loan is in the half', async () => {

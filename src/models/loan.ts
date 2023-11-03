@@ -66,11 +66,11 @@ function init(sequelize: Sequelize): void {
         allowNull: false,
       },
       created_at: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
       updated_at: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
       loan_type: {
