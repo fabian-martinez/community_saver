@@ -1,3 +1,5 @@
+import { Op } from "sequelize";
+
 const validateFilter = (filterParams:any):any => {
       
     if(!filterParams){
@@ -17,4 +19,22 @@ const validateFilter = (filterParams:any):any => {
     });
 }
 
-export {validateFilter}
+const buildFilter = (filters:any[]):any => {
+  return filters.map((filter:any) => {
+      const { attribute, operation, value } = filter;
+      if(operation === 'eq')
+          return { 
+              [attribute] : {
+                  [Op.eq]:value
+              }
+          };
+      if(operation === 'gt')
+          return {
+              [attribute] : {
+                  [Op.gt]:value
+              }
+          }
+  });
+}
+
+export {validateFilter, buildFilter}

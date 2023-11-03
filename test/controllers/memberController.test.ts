@@ -4,7 +4,7 @@ import sinon, { SinonStub } from "sinon";
 import { NotFoundError } from "../../src/helpers/errors";
 import { Request, Response } from "express";
 
-import { allMembers, member } from '../testData';
+import { allMembers, oldMember } from '../testData';
 import MemberService from "../../src/services/memberService";
 import MemberController from "../../src/controllers/memberController";
 
@@ -182,7 +182,7 @@ describe('Memeber Controller', () => {
     });
 
     it('should call to member service to get a member by id', async () => {
-        getMemberStub.resolves(member)
+        getMemberStub.resolves(oldMember)
 
         const req = { params : { "id":"test"} }
         const res = {
@@ -191,7 +191,7 @@ describe('Memeber Controller', () => {
                 return res;
             },
             json: (data: any) => {
-                expect(data).to.deep.equal(member);
+                expect(data).to.deep.equal(oldMember);
             },
         };
 

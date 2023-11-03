@@ -2,13 +2,12 @@ import { Op } from "sequelize";
 import { NotFoundError } from "../helpers/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
-import logger from "../helpers/loggerService";
+import { DEFAULT_PAGINATION } from "../helpers/enums";
+import { buildFilter } from "../helpers/utilities";
 
 
 class LoanService {
 
-    DEFAULT_PAGE=1
-    DEFAULT_PER_PAGE=10
 
     public async getLoan(loan_id: string):Promise<Loan> {
         const loan = await Loan.findByPk(loan_id)
@@ -26,11 +25,11 @@ class LoanService {
         
         let whereClause: any = {};
         
-        const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
-        const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
+        const page = (isNaN(pagination.page) || pagination.page < 1)?DEFAULT_PAGINATION.PAGE:pagination.page
+        const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?DEFAULT_PAGINATION.PER_PAGE:pagination.per_page
         
         if(filter){
-            whereClause = this.buildFilter(filter)
+            whereClause = buildFilter(filter)
         }
 
         const rowAndCount = await Loan.findAndCountAll({
@@ -59,8 +58,8 @@ class LoanService {
 
     public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
 
-        const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
-        const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
+        const page = (isNaN(pagination.page) || pagination.page < 1)?DEFAULT_PAGINATION.PAGE:pagination.page
+        const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?DEFAULT_PAGINATION.PER_PAGE:pagination.per_page
         const rowAndCount = await LoanTransaction.findAndCountAll({
             where:{
                 'loan_id':loan_id
@@ -85,23 +84,6 @@ class LoanService {
         return response;
     }
 
-    private buildFilter(filters:any[]):any {
-        return filters.map((filter:any) => {
-            const { attribute, operation, value } = filter;
-            if(operation === 'eq')
-                return { 
-                    [attribute] : {
-                        [Op.eq]:value
-                    }
-                };
-            if(operation === 'gt')
-                return {
-                    [attribute] : {
-                        [Op.gt]:value
-                    }
-                }
-        });
-    }
 }
 
 export default LoanService

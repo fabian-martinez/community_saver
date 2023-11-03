@@ -11,7 +11,7 @@ import {
     oldLoan,
     rowAndCountData,
     findAndCountAllLoans,
-    findAndCountAllEmptyLoans,
+    findAndCountAllEmpty,
     DEFAULT_FILTER_LOANS,
     DEFAULT_FILTER_LOAN_HISTORIC,
     WITH_PAGE_FILTER_LOANS,
@@ -21,7 +21,6 @@ import {
     FILTER_LOANS_EQ_AND_GT
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
-import logger from '../../src/helpers/loggerService';
 import { NotFoundError } from '../../src/helpers/errors';
 
 
@@ -144,7 +143,7 @@ describe('LoanService', () => {
     
     it('should throw an error when no Loans', async () => {
         
-        findLoansAndCountAllStub.resolves(findAndCountAllEmptyLoans);
+        findLoansAndCountAllStub.resolves(findAndCountAllEmpty);
         try {
             await loanService.getLoans({page:NaN,per_page:NaN});
         } catch (error) {
