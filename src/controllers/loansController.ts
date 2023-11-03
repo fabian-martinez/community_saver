@@ -78,19 +78,23 @@ class LoanController{
         res.json("Por implementar")
     }
 
-    private validateFilter = (filterParam:any):any => {
+    private validateFilter = (filterParams:any):any => {
       
-      if(!filterParam){
+      if(!filterParams){
         return undefined
       }
       
-      const [attribute, operation, value] = filterParam.split(':');
+      const filters = filterParams.split(',');
 
-      if (operation && value) {
-        return { attribute, operation, value };
-      } else {
-        throw new BadRequestError('Invalid Filter');
-      }
+      return filters.map((filterParam:any) => {
+        const [attribute, operation, value] = filterParam.split(':');
+
+        if (operation && value) {
+          return { attribute, operation, value };
+        } else {
+          throw new Error('Estructura de filtro incorrecta');
+        }
+      });
     }
 }
 

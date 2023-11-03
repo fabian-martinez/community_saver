@@ -22,7 +22,7 @@ class LoanService {
 
     }
     
-    public async getLoans(pagination:{page:number,per_page:number},filter?:any):Promise<any> {
+    public async getLoans(pagination:{page:number,per_page:number},filter?:any[]):Promise<any> {
         
         let whereClause: any = {};
         
@@ -85,22 +85,22 @@ class LoanService {
         return response;
     }
 
-    private buildFilter(filter:any):any {
-        const { attribute, operation, value } = filter;
-
-        let filterOptions = {};
-        if(operation === 'eq')
-            return { 
-                [attribute] : {
-                    [Op.eq]:`${value}`
+    private buildFilter(filters:any[]):any {
+        return filters.map((filter:any) => {
+            const { attribute, operation, value } = filter;
+            if(operation === 'eq')
+                return { 
+                    [attribute] : {
+                        [Op.eq]:value
+                    }
+                };
+            if(operation === 'gt')
+                return {
+                    [attribute] : {
+                        [Op.gt]:value
+                    }
                 }
-            };
-        if(operation === 'gt')
-            return {
-                [attribute] : {
-                    [Op.gt]:`${value}`
-                }
-            };
+        });
     }
 }
 

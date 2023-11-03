@@ -124,6 +124,32 @@ describe('Loan Controller', () => {
             )).to.be.true
     });
 
+    it('should call to Loand service to get loans with some filters', async () => {
+
+        getLoansStub.resolves(allLoans)
+
+        const req = { query: {"filter":"member_id:eq:a8f6bb2c-64f2-4728-a110-575ee3e9fa28,created_at:gt:1684472400"} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(allLoans);
+            },
+        };
+        
+        await loanController.getLoans(req as unknown as Request,res as Response)
+
+        expect(getLoansStub.calledOnceWith(
+            {page:NaN,per_page:NaN},
+            [
+                {attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"},
+                {attribute:"created_at",operation:"gt",value:"1684472400"},
+            ]
+            )).to.be.true
+    });
+
     it('should throw an error when get loans with invalid filter', async () => {
 
         getLoansStub.resolves(allLoans)

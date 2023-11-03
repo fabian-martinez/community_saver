@@ -268,9 +268,8 @@ export const WITH_PER_PAGE_FILTER_LOANS:any = {
 }
 
 export const FILTER_LOANS_EQ:any = {
-    where: {
-        member_id: { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" },
-    },
+    where: [{member_id: { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" }}]
+    ,
     limit: 10,
     offset: (1 - 1) * 10,
     order: [
@@ -279,9 +278,18 @@ export const FILTER_LOANS_EQ:any = {
 }
 
 export const FILTER_LOANS_GT:any = {
-    where: {
-        created_at: { [Op.gt]: "1684472400" },
-    },
+    where: [{created_at: { [Op.gt]: "1684472400" }}],
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+export const FILTER_LOANS_EQ_AND_GT:any = {
+    where: [
+        {member_id: { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" }},
+        {created_at: { [Op.gt]: "1684472400" }}
+    ],
     limit: 10,
     offset: (1 - 1) * 10,
     order: [

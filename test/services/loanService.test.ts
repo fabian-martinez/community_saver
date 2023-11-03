@@ -17,7 +17,8 @@ import {
     WITH_PAGE_FILTER_LOANS,
     WITH_PER_PAGE_FILTER_LOANS,
     FILTER_LOANS_EQ,
-    FILTER_LOANS_GT
+    FILTER_LOANS_GT,
+    FILTER_LOANS_EQ_AND_GT
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
 import logger from '../../src/services/loggerService';
@@ -134,7 +135,7 @@ describe('LoanService', () => {
                 ]
             );
         
-        expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_GT)).to.be.true
+        expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_EQ_AND_GT)).to.be.true
         expect(response.items).to.be.an('array')
         expect(response.items).have.lengthOf(10)
         expect(response.items).to.eql(findAndCountAllLoans.rows)
