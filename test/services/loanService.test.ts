@@ -22,7 +22,7 @@ import {
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
 import logger from '../../src/helpers/loggerService';
-import { NotFoundError } from '../../src/models/errors';
+import { NotFoundError } from '../../src/helpers/errors';
 
 
 

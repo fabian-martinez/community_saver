@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 import LoanService from "../../src/services/loanService";
 
 import { allLoans, loansByMember, oldLoan, paymentHistoric } from '../testData';
-import { NotFoundError } from "../../src/models/errors";
+import { NotFoundError } from "../../src/helpers/errors";
 import Sinon from "sinon";
 
 describe('Loan Controller', () => {

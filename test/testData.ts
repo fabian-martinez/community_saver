@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { Op } from 'sequelize';
-import { initModels } from '../src/models/initModels';
+import { initModels } from '../src/config/initModels';
 import { Loan } from '../src/models/loan';
 import { Member } from '../src/models/member';
 import { PaymentSchedule } from '../src/models/payment_schedule';
