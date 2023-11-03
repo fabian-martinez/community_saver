@@ -6,7 +6,7 @@ dotenv.config()
 
 try {
     const server = new Server()
-    server.listen()
+    server.start()
 } catch (error) {
     logger.error(error)
 }

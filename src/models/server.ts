@@ -12,18 +12,22 @@ class Server {
 	private apiPath = {
 		loans: '/api/v1/loans'
 	}
+	private server:any
 
 	constructor() {
 		this.app = express();
 		this.port = process.env.PORT || '8000';
 		
 		// Init methods
-		this.dbConnection();
-
 		this.middelwares();
 		this.routes();
 
+
 	}
+
+	public getApp(): Application {
+		return this.app;
+	  }
 
 	async dbConnection() {
 		try {
@@ -51,10 +55,19 @@ class Server {
 		this.app.use(this.apiPath.loans, loansRouter)
 	}
 
-	listen(){
-		return this.app.listen( this.port, () => {
-			logger.info('Servidor funcionando en puerto: ' + this.port);
-		})
+	async start() {
+		await this.dbConnection();
+		this.server =  this.app.listen(this.port, () => {
+			console.log(`Server is running on port ${this.port}`);
+		});
+	}
+	
+	async stop() {
+		if (this.server) {
+			this.server.close(() => {
+			console.log('Server has been stopped.');
+			});
+		}
 	}
 	
 }
