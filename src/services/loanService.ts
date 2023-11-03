@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { NotFoundError } from "../models/errors";
 import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
@@ -33,7 +34,7 @@ class LoanService {
         }
 
         const rowAndCount = await Loan.findAndCountAll({
-            where:{},
+            where:whereClause,
             limit: per_page,
             offset: (page - 1) * per_page,
             order: [
@@ -85,7 +86,25 @@ class LoanService {
     }
 
     private buildFilter(filter:any):any {
+        const { attribute, operation, value } = filter;
 
+        let filterOptions = {};
+        switch (operation) {
+            case 'eq':
+                return { 
+                    [attribute] : {
+                        [Op.eq]:`${value}`
+                    }
+                };
+                break;
+            case 'gt':
+                return {
+                    [attribute] : {
+                        [Op.gt]:`${value}`
+                    }
+                };
+            // Agrega más casos para otras operaciones según tus necesidades
+        }
     }
 }
 
