@@ -1,6 +1,6 @@
 import { Request, RequestParamHandler, Response } from "express";
 import LoanService from '../services/loanService';
-import logger from "../services/loggerService";
+import logger from "../helpers/loggerService";
 import { BadRequestError, NotFoundError } from "../models/errors";
 
 class LoanController{

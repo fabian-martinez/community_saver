@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import Server from './models/server';
-import logger from './services/loggerService';
+import Server from './config/serverConfig';
+import logger from './helpers/loggerService';
 
 dotenv.config()
 

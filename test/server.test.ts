@@ -1,7 +1,7 @@
 // test/app.test.ts
 import request from 'supertest';
 import dotenv from 'dotenv';
-import Server from '../../src/models/server'; // Asegúrate de que la ruta sea correcta
+import Server from '../src/config/serverConfig'; // Asegúrate de que la ruta sea correcta
 import { expect } from 'chai';
 
 dotenv.config()

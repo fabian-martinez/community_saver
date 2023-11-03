@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import LoanController from '../controllers/loansController';
 import LoanService from '../services/loanService';
-import logger from '../services/loggerService';
+import logger from '../helpers/loggerService';
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const loanService = new LoanService()
 
 const loanController:LoanController = new LoanController(loanService)
 
-logger.debug(`Loan Controller Inicailizado ${loanController}`)
+logger.debug(`Starting Loan Service`)
 
 router.get    ('/',                loanController.getLoans);
 router.get    ('/:id',             loanController.getLoan);
