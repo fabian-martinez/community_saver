@@ -55,7 +55,7 @@ class LoanController{
             const loan_id:string = req.params.id
             const page:number = Number(req.query.page)
             const per_page:number = Number(req.query.per_page)
-            const response = await this.loanService.getLoanHistoric(loan_id,{page,per_page});
+            const response = await this.loanService.getLoanTransactions(loan_id,{page,per_page});
             res.status(200).json(response)
         } catch (error) {
             if (error instanceof BadRequestError) {

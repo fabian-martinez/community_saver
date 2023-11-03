@@ -96,7 +96,7 @@ describe('LoanService', () => {
         
         const response = await loanService.getLoans(
                 {page:NaN,per_page:NaN},
-                {attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"}
+                [{attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"}]
             );
         
         expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_EQ)).to.be.true
@@ -112,7 +112,7 @@ describe('LoanService', () => {
         
         const response = await loanService.getLoans(
                 {page:NaN,per_page:NaN},
-                {attribute:"created_at",operation:"gt",value:"1684472400"}
+                [{attribute:"created_at",operation:"gt",value:"1684472400"}]
             );
         
         expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_GT)).to.be.true
@@ -121,7 +121,25 @@ describe('LoanService', () => {
         expect(response.items).to.eql(findAndCountAllLoans.rows)
 
     });
-    
+
+    it('should get loans with a eq,gt filter', async () => {
+
+        findLoansAndCountAllStub.resolves(findAndCountAllLoans);
+        
+        const response = await loanService.getLoans(
+                {page:NaN,per_page:NaN},
+                [
+                    {attribute:"member_id",operation:"eq",value:"a8f6bb2c-64f2-4728-a110-575ee3e9fa28"},
+                    {attribute:"created_at",operation:"gt",value:"1684472400"}
+                ]
+            );
+        
+        expect(findLoansAndCountAllStub.calledOnceWith(FILTER_LOANS_GT)).to.be.true
+        expect(response.items).to.be.an('array')
+        expect(response.items).have.lengthOf(10)
+        expect(response.items).to.eql(findAndCountAllLoans.rows)
+
+    });
     
     it('should throw an error when no Loans', async () => {
         
@@ -169,7 +187,7 @@ describe('LoanService', () => {
     it('should get loan historic by id with default pagination', async () => {
         findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
         
-        const response = await loanService.getLoanHistoric('test',{page:NaN,per_page:NaN});
+        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:NaN});
 
         expect(findLoansTransactionsAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOAN_HISTORIC)).to.be.true;
         expect(response.records).to.be.an('array')

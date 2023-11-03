@@ -57,7 +57,7 @@ class LoanService {
         return response;
     }
 
-    public async getLoanHistoric(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
+    public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
 
         const page = (isNaN(pagination.page) || pagination.page < 1)?this.DEFAULT_PAGE:pagination.page
         const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?this.DEFAULT_PER_PAGE:pagination.per_page
@@ -89,22 +89,18 @@ class LoanService {
         const { attribute, operation, value } = filter;
 
         let filterOptions = {};
-        switch (operation) {
-            case 'eq':
-                return { 
-                    [attribute] : {
-                        [Op.eq]:`${value}`
-                    }
-                };
-                break;
-            case 'gt':
-                return {
-                    [attribute] : {
-                        [Op.gt]:`${value}`
-                    }
-                };
-            // Agrega más casos para otras operaciones según tus necesidades
-        }
+        if(operation === 'eq')
+            return { 
+                [attribute] : {
+                    [Op.eq]:`${value}`
+                }
+            };
+        if(operation === 'gt')
+            return {
+                [attribute] : {
+                    [Op.gt]:`${value}`
+                }
+            };
     }
 }
 
