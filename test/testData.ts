@@ -50,7 +50,7 @@ export const findAndCountAllLoans:any = {
         Loan.build({"id": '00dbb5d48-9c47-46ea-a7df-3be17db984c9',"member_id": '324a3e00-b77e-4d9f-9184-d60ceb0fccec',"original_amount": 4200000,"updated_amount": 4200000,"monthly_payment": 0,"interest_rate": 0.0200,"created_at": new Date(2022,1,1),"updated_at": new Date(2022,1,1),"loan_type": "AGIL"}),
     ]
 }
-export const findAndCountAllEmptyLoans:any = {
+export const findAndCountAllEmpty:any = {
     count:0,
     rows:[]
 }
@@ -137,7 +137,7 @@ export const oldLoan = Loan.build({
     "loan_type": "OLD_LOAN"
 })
 
-export const member = Member.build({
+export const oldMember = Member.build({
     member_id:"member_id",
     name:"Member Name"
 })
@@ -253,7 +253,25 @@ export const paymentScheduleToNewLoan:any = {
   ],
 }
 
+export const DEFAULT_FILTER_MEMBERS:any = {
+    where:{},
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
 export const WITH_PAGE_FILTER_LOANS:any = {
+    where:{},
+    limit: 10,
+    offset: (2 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const WITH_PAGE_FILTER_MEMBERS:any = {
     where:{},
     limit: 10,
     offset: (2 - 1) * 10,
@@ -271,8 +289,27 @@ export const WITH_PER_PAGE_FILTER_LOANS:any = {
   ],
 }
 
+export const WITH_PER_PAGE_FILTER_MEMBERS:any = {
+    where:{},
+    limit: 7,
+    offset: (1 - 1) * 7,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
 export const FILTER_LOANS_EQ:any = {
-    where: [{member_id: { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" }}]
+    where: [{member_id : { [Op.eq]: "a8f6bb2c-64f2-4728-a110-575ee3e9fa28" }}]
+    ,
+    limit: 10,
+    offset: (1 - 1) * 10,
+    order: [
+        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const FILTER_MEMBERS_EQ:any = {
+    where: [{name: { [Op.eq]: "Member Name" }}]
     ,
     limit: 10,
     offset: (1 - 1) * 10,
@@ -321,5 +358,20 @@ export const allMembers:Member[] = [
     Member.build({id:"memberid8",name:"Member Numero 8"}),
     Member.build({id:"memberid9",name:"Member Numero 9"}),
     Member.build({id:"memberid10",name:"Member Numero 10"}),
-    Member.build({id:"memberid11",name:"Member Numero 11"}),
 ]
+
+export const findAndCountAllMembers:any = {
+    count: 20,
+    rows: [
+        Member.build({id:"memberid1",name:"Member Numero 1"}),
+        Member.build({id:"memberid2",name:"Member Numero 2"}),
+        Member.build({id:"memberid3",name:"Member Numero 3"}),
+        Member.build({id:"memberid4",name:"Member Numero 4"}),
+        Member.build({id:"memberid5",name:"Member Numero 5"}),
+        Member.build({id:"memberid6",name:"Member Numero 6"}),
+        Member.build({id:"memberid7",name:"Member Numero 7"}),
+        Member.build({id:"memberid8",name:"Member Numero 8"}),
+        Member.build({id:"memberid9",name:"Member Numero 9"}),
+        Member.build({id:"memberid10",name:"Member Numero 10"}),
+    ]
+}
