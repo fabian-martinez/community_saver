@@ -1,9 +1,18 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { Loan } from './loan';
 
-class LoanTransaction extends Model {
+interface LoanTransactionModel{
+  id: number,
+  loan_id: typeof DataTypes.UUID,
+  date: Date,
+  payment_amount: number,
+  interest_amount: number,
+  disbursement_amount: number,
+  last_balance: number,
+}
+class LoanTransaction extends Model implements LoanTransaction {
   public id!: number;
-  public loan_id!: number;
+  public loan_id!: typeof DataTypes.UUID;
   public date!: Date;
   public payment_amount!: number;
   public interest_amount!: number;
