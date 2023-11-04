@@ -257,9 +257,6 @@ export const DEFAULT_FILTER_MEMBERS:any = {
     where:{},
     limit: 10,
     offset: (1 - 1) * 10,
-    order: [
-        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-  ],
 }
 
 export const WITH_PAGE_FILTER_LOANS:any = {
@@ -275,9 +272,6 @@ export const WITH_PAGE_FILTER_MEMBERS:any = {
     where:{},
     limit: 10,
     offset: (2 - 1) * 10,
-    order: [
-        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-  ],
 }
 
 export const WITH_PER_PAGE_FILTER_LOANS:any = {
@@ -292,10 +286,7 @@ export const WITH_PER_PAGE_FILTER_LOANS:any = {
 export const WITH_PER_PAGE_FILTER_MEMBERS:any = {
     where:{},
     limit: 7,
-    offset: (1 - 1) * 7,
-    order: [
-        ['created_at', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
-  ],
+    offset: (1 - 1) * 7
 }
 
 export const FILTER_LOANS_EQ:any = {
