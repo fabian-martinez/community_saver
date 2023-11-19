@@ -4,7 +4,7 @@ import { Loan } from './loan';
 interface LoanTransactionModel{
   id: number,
   loan_id: typeof DataTypes.UUID,
-  date: Date,
+  date: number,
   payment_amount: number,
   interest_amount: number,
   disbursement_amount: number,
@@ -13,7 +13,7 @@ interface LoanTransactionModel{
 class LoanTransaction extends Model implements LoanTransaction {
   public id!: number;
   public loan_id!: typeof DataTypes.UUID;
-  public date!: Date;
+  public date!: number;
   public payment_amount!: number;
   public interest_amount!: number;
   public disbursement_amount!: number;
@@ -41,7 +41,7 @@ function init(sequelize: Sequelize): void {
         },
       },
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DECIMAL(20, 2),
         defaultValue: DataTypes.NOW,
       },
       payment_amount: {
