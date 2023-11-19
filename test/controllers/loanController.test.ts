@@ -233,10 +233,10 @@ describe('Loan Controller', () => {
         
     });
 
-    it('should call to Loan service to get loan historic', async () => {
+    it('should call to Loan service to get loan transactions', async () => {
         getLoanTransactionsStub.resolves(paymentHistoric)
 
-        const req = { params : { "id":"test"}, query: {page:5, per_page:10} }
+        const req = { params : { "id":"test"} }
         const res = {
             status: (statusCode: number) => {
                 expect(statusCode).to.equal(200);
@@ -247,9 +247,68 @@ describe('Loan Controller', () => {
             },
         };
 
-        await loanController.getLoanHistoric(req as unknown as Request,res as Response)
+        await loanController.getLoanTransactions(req as unknown as Request,res as Response)
         
-        expect(getLoanTransactionsStub.calledOnceWith('test')).to.be.true
+        expect(getLoanTransactionsStub.calledOnceWith('test',{page:NaN,per_page:NaN},undefined)).to.be.true
+    
+    });
+
+    it('should call to Loan service to get loan transactions with page', async () => {
+        getLoanTransactionsStub.resolves(paymentHistoric)
+
+        const req = { params : { "id":"test"}, query: {page:5} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(paymentHistoric);
+            },
+        };
+
+        await loanController.getLoanTransactions(req as unknown as Request,res as Response)
+        
+        expect(getLoanTransactionsStub.calledOnceWith('test',{page:5, per_page:NaN},undefined)).to.be.true
+    
+    });
+
+    it('should call to Loan service to get loan transactions with page', async () => {
+        getLoanTransactionsStub.resolves(paymentHistoric)
+
+        const req = { params : { "id":"test"}, query: {per_page:5} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(paymentHistoric);
+            },
+        };
+
+        await loanController.getLoanTransactions(req as unknown as Request,res as Response)
+        
+        expect(getLoanTransactionsStub.calledOnceWith('test',{page:NaN, per_page:5},undefined)).to.be.true
+    
+    });
+
+    it('should call to Loan service to get loan transactions order by date', async () => {
+        getLoanTransactionsStub.resolves(paymentHistoric)
+        const sort_by = '-date'
+        const req = { params : { "id":"test"}, query: {sort:sort_by} }
+        const res = {
+            status: (statusCode: number) => {
+                expect(statusCode).to.equal(200);
+                return res;
+            },
+            json: (data: any) => {
+                expect(data).to.deep.equal(paymentHistoric);
+            },
+        };
+
+        await loanController.getLoanTransactions(req as unknown as Request,res as Response)
+        expect(getLoanTransactionsStub.alwaysCalledWith('test',{page:NaN,per_page:NaN},sort_by)).to.be.true
     
     });
 });

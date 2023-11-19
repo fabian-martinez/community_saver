@@ -335,6 +335,42 @@ export const DEFAULT_FILTER_LOAN_HISTORIC:any = {
   ],
 }
 
+export const WITH_PAGE_FILTER_LOAN_HISTORIC:any = {
+    where:{ 'loan_id':'test' },
+    limit: 10,
+    offset: (2 - 1) * 10,
+    order: [
+        ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const WITH_PER_PAGE_FILTER_LOAN_HISTORIC:any = {
+    where:{ 'loan_id':'test' },
+    limit: 7,
+    offset: (1 - 1) * 7,
+    order: [
+        ['date', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const WITH_SORTING_FILTER_LOAN_HISTORIC:any = {
+    where:{ 'loan_id':'test' },
+    limit: 7,
+    offset: (1 - 1) * 7,
+    order: [
+        ['test_parameter', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
+export const WITH_SORTING_ASC_FILTER_LOAN_HISTORIC:any = {
+    where:{ 'loan_id':'test' },
+    limit: 7,
+    offset: (1 - 1) * 7,
+    order: [
+        ['test_parameter', 'ASC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+}
+
 export const allMembers:Member[] = [
     Member.build({id:"memberid1",name:"Member Numero 1"}),
     Member.build({id:"memberid2",name:"Member Numero 2"}),

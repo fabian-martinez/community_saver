@@ -31,9 +31,6 @@ class LoanController{
               }
         }
     }
-    public getLoansByMember = async (req:Request, res:Response):Promise<void> => {
-        res.json("Por implementar")
-    }
     public getLoan = async (req:Request, res:Response):Promise<void> => {
         try {
             const loanId:string = req.params.id
@@ -50,12 +47,13 @@ class LoanController{
               }
         }
     }
-    public getLoanHistoric =async (req:Request, res:Response) => {
+    public getLoanTransactions =async (req:Request, res:Response) => {
         try {
             const loan_id:string = req.params.id
-            const page:number = Number(req.query.page)
-            const per_page:number = Number(req.query.per_page)
-            const response = await this.loanService.getLoanTransactions(loan_id,{page,per_page});
+            const page:number = Number(req.query?.page)
+            const per_page:number = Number(req.query?.per_page)
+            const sort_by:string|undefined = (!req.query?.sort)?undefined:String(req.query?.sort)
+            const response = await this.loanService.getLoanTransactions(loan_id,{page,per_page},sort_by);
             res.status(200).json(response)
         } catch (error) {
             if (error instanceof BadRequestError) {

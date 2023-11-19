@@ -55,17 +55,19 @@ class LoanService {
         return response;
     }
 
-    public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number}):Promise<any> {
+    public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number},sort:string='date'):Promise<any> {
 
         const page = (isNaN(pagination.page) || pagination.page < 1)?DEFAULT_PAGINATION.PAGE:pagination.page
         const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?DEFAULT_PAGINATION.PER_PAGE:pagination.per_page
+        const sorting_order = sort.startsWith('-')?'ASC':'DESC';
+        const sorting = sort.startsWith('-')?sort.substring(1):sort;
         const rowAndCount = await LoanTransaction.findAndCountAll({
             where:{
                 'loan_id':loan_id
             },
             limit: per_page,
             offset: (page - 1) * per_page,
-            order: [['date', 'DESC'],]
+            order: [[sorting, sorting_order],]
         });
 
         if (rowAndCount.rows.length === 0) {
