@@ -18,7 +18,11 @@ import {
     WITH_PER_PAGE_FILTER_LOANS,
     FILTER_LOANS_EQ,
     FILTER_LOANS_GT,
-    FILTER_LOANS_EQ_AND_GT
+    FILTER_LOANS_EQ_AND_GT,
+    WITH_PAGE_FILTER_LOAN_HISTORIC,
+    WITH_PER_PAGE_FILTER_LOAN_HISTORIC,
+    WITH_SORTING_FILTER_LOAN_HISTORIC,
+    WITH_SORTING_ASC_FILTER_LOAN_HISTORIC
 } from '../testData';
 import { LoanTransaction } from '../../src/models/loan_transaction';
 import { NotFoundError } from '../../src/helpers/errors';
@@ -184,10 +188,10 @@ describe('LoanService', () => {
     });
 
         
-    it('should get loan historic by id with default pagination', async () => {
+    it('should get loan transactions by id with default pagination', async () => {
         findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
         
-        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:NaN});
+        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:NaN},undefined);
 
         expect(findLoansTransactionsAndCountAllStub.calledOnceWith(DEFAULT_FILTER_LOAN_HISTORIC)).to.be.true;
         expect(response.records).to.be.an('array')
@@ -198,25 +202,66 @@ describe('LoanService', () => {
         expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
 
     });
-    
-    // it('should get payment schedule when the loan is in the half', async () => {
         
-    // });
-    
-    // it('should get payment schedule when the loan has extra payments', async () => {
+    it('should get loan transactions by id with page 2', async () => {
+        findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
         
-    // });
-    
-    // it('should disburce a Loan', async () => {
-        
-    // });
-    
-    // it('should pay a Loan', async () => {
-        
-    // });
+        const response = await loanService.getLoanTransactions('test',{page:2,per_page:NaN},undefined);
 
-    // it('should create a new Loan', async () => {
+        expect(findLoansTransactionsAndCountAllStub.calledOnceWith(WITH_PAGE_FILTER_LOAN_HISTORIC)).to.be.true;
+        expect(response.records).to.be.an('array')
+        expect(response.total).to.equal(7)
+        expect(response.page).to.equal(2)
+        expect(response.per_page).to.equal(10)
+        expect(response.total_pages).to.equal(1)
+        expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
+
+    });
         
-    // });
+    it('should get loan transactions by id with page 7', async () => {
+        findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
+        
+        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:7},undefined);
+
+        expect(findLoansTransactionsAndCountAllStub.calledOnceWith(WITH_PER_PAGE_FILTER_LOAN_HISTORIC)).to.be.true;
+        expect(response.records).to.be.an('array')
+        expect(response.total).to.equal(7)
+        expect(response.page).to.equal(1)
+        expect(response.per_page).to.equal(7)
+        expect(response.total_pages).to.equal(1)
+        expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
+
+    });
+        
+    it('should get loan transactions by id with sort parameter', async () => {
+        findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
+        
+        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:7},'test_parameter');
+
+        expect(findLoansTransactionsAndCountAllStub.calledOnceWith(WITH_SORTING_FILTER_LOAN_HISTORIC)).to.be.true;
+        expect(response.records).to.be.an('array')
+        expect(response.total).to.equal(7)
+        expect(response.page).to.equal(1)
+        expect(response.per_page).to.equal(7)
+        expect(response.total_pages).to.equal(1)
+        expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
+
+    });
+        
+    it('should get loan transactions by id with sort ascending parameter', async () => {
+        findLoansTransactionsAndCountAllStub.resolves(rowAndCountData);
+        
+        const response = await loanService.getLoanTransactions('test',{page:NaN,per_page:7},'-test_parameter');
+
+        expect(findLoansTransactionsAndCountAllStub.calledOnceWith(WITH_SORTING_ASC_FILTER_LOAN_HISTORIC)).to.be.true;
+        expect(response.records).to.be.an('array')
+        expect(response.total).to.equal(7)
+        expect(response.page).to.equal(1)
+        expect(response.per_page).to.equal(7)
+        expect(response.total_pages).to.equal(1)
+        expect(JSON.stringify(response.records)).to.eql(JSON.stringify(rowAndCountData.rows))
+
+    });
+    
         
 });
