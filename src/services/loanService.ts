@@ -55,7 +55,7 @@ class LoanService {
         return response;
     }
 
-    public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number},sort:string='date'):Promise<any> {
+    public async getLoanTransactions(loan_id:string,pagination:{page:number,per_page:number},sort:string='id'):Promise<any> {
 
         const page = (isNaN(pagination.page) || pagination.page < 1)?DEFAULT_PAGINATION.PAGE:pagination.page
         const per_page = (isNaN(pagination.per_page ) || pagination.per_page < 1)?DEFAULT_PAGINATION.PER_PAGE:pagination.per_page
