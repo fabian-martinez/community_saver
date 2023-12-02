@@ -5,6 +5,7 @@ import cors from 'cors';
 import db from "./databaseConfig";
 import { initModels } from "./initModels";
 import logger from "../helpers/loggerService";
+import authenticate from "../middlewares/authGuard";
 
 class Server {
 
@@ -51,11 +52,14 @@ class Server {
 
 		//Public folder
 		this.app.use( express.static('public'))
-	}
 
+	}
+	
 	routes() {
-		this.app.use(this.apiPath.loans, loansRouter)
+		//Portected URLs
+		this.app.use(authenticate)
 		this.app.use(this.apiPath.members, membersRouter)
+		this.app.use(this.apiPath.loans, loansRouter)
 	}
 
 	async start() {
