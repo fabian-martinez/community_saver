@@ -20,13 +20,13 @@ class LoanController{
             const loans = await this.loanService.getLoans({page,per_page},filter)
             res.status(200).json(loans)
         } catch (error) {
+            logger.error(error)
             if (error instanceof BadRequestError) {
                 logger.error(error)
                 res.status(error.code).json({ error: error.message });
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
-                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }
@@ -37,12 +37,12 @@ class LoanController{
             const loan = await this.loanService.getLoan(loanId);
             res.status(200).json(loan)
         } catch (error) {
+            logger.error(error)
             if (error instanceof BadRequestError) {
                 res.status(error.code).json({ error: error.message });
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
-                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }
@@ -56,12 +56,12 @@ class LoanController{
             const response = await this.loanService.getLoanTransactions(loan_id,{page,per_page},sort_by);
             res.status(200).json(response)
         } catch (error) {
+            logger.error(error)
             if (error instanceof BadRequestError) {
                 res.status(error.code).json({ error: error.message });
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
-                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }

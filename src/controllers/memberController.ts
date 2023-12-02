@@ -18,16 +18,14 @@ class MemberController{
             const per_page:number = Number(req.query.per_page);
             const filter:any = validateFilter(req.query.filter);
             const members = await this.memberService.getMembers({page,per_page},filter)
-    
             res.status(200).json(members)
         } catch (error) {
+            logger.error(error)
             if (error instanceof BadRequestError) {
-                logger.error(error)
                 res.status(error.code).json({ error: error.message });
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
-                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }
@@ -39,12 +37,12 @@ class MemberController{
             const member = await this.memberService.getMember(member_id);
             res.status(200).json(member)
         } catch (error) {
+            logger.error(error)
             if (error instanceof BadRequestError) {
                 res.status(error.code).json({ error: error.message });
               } else if (error instanceof NotFoundError) {
                 res.status(error.code).json({ error: error.message });
               } else {
-                logger.error(error)
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         }
