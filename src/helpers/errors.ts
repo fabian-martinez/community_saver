@@ -22,5 +22,14 @@ interface CustomError {
       this.code = 404;
     }
   }
+  class Unauthorized implements CustomError {
+    message: string;
+    code: number;
   
-  export {BadRequestError, NotFoundError}
+    constructor(message: string) {
+      this.message = message;
+      this.code = 401;
+    }
+  }
+  
+  export {BadRequestError, NotFoundError, Unauthorized}
