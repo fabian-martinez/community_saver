@@ -1,19 +1,20 @@
 import { DEFAULT_PAGINATION } from "../helpers/enums";
 import { NotFoundError } from "../helpers/errors";
+import logger from "../helpers/loggerService";
 import { buildFilter } from "../helpers/utilities";
 import { Member } from "../models/member";
 
 class MemberService {
 
     public async getMember(member_id:string):Promise<any>{
-        const loan = await Member.findByPk(member_id)
+        const member = await Member.findByPk(member_id)
 
 
-        if (!loan) {
+        if (!member) {
             throw new NotFoundError(`Member with id ${member_id} Not Found`)
         }
-
-        return loan;
+        logger.debug(`Getting the member ${member.name}`)
+        return member;
 
     }
 
@@ -44,6 +45,8 @@ class MemberService {
             'total_pages':Math.ceil(rowAndCount.count/per_page),
             'items':rowAndCount.rows
         }
+
+        logger.debug(`Getting ${response.items.length} members of ${response.total}`)
 
         return response;
     }

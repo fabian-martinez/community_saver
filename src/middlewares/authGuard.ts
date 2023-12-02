@@ -9,12 +9,13 @@ const authenticate = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const idToken = req.header('Authorization')
         if (idToken === undefined) {
-            logger.debug(idToken)
             throw new Unauthorized("Invalid token");
         }
         const isLoged = await admin.getAuth(firebaseApp).verifyIdToken(idToken)
+        logger.debug(`User ${isLoged.uid} has been authenticated`)
         next()
     } catch (error) {
+        logger.error(error)
         if (error instanceof BadRequestError) {
                 res.status(error.code).json({ error: error.message });
             } else if (error instanceof NotFoundError) {
@@ -22,8 +23,7 @@ const authenticate = async (req:Request, res:Response, next:NextFunction) => {
             } else if (error instanceof Unauthorized){
                 res.status(error.code).json({ error: error.message });
             } else {
-            logger.error(error)
-            res.status(401).json({ error: 'Error Authenticating' });
+                res.status(401).json({ error: 'Error Authenticating' });
             }
     }
 }

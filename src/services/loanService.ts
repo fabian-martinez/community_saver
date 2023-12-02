@@ -3,6 +3,7 @@ import { Loan, LoanModel } from "../models/loan";
 import { LoanTransaction } from "../models/loan_transaction";
 import { DEFAULT_PAGINATION } from "../helpers/enums";
 import { buildFilter } from "../helpers/utilities";
+import logger from "../helpers/loggerService";
 
 
 class LoanService {
@@ -15,7 +16,7 @@ class LoanService {
         if (!loan) {
             throw new NotFoundError(`Loan with id ${loan_id} Not Found`)
         }
-
+        logger.debug(`Getting ${loan_id} Loan`)
         return loan;
 
     }
@@ -51,7 +52,7 @@ class LoanService {
             'total_pages':Math.ceil(rowAndCount.count/per_page),
             'items':rowAndCount.rows
         }
-
+        logger.debug(`Getting ${response.items.length} loans of ${response.total} to filter ${JSON.stringify(filter)}`)
         return response;
     }
 
@@ -81,7 +82,7 @@ class LoanService {
             'total_pages':Math.ceil(rowAndCount.count/per_page),
             'records':rowAndCount.rows
         }
-
+        logger.debug(`Getting page ${response.page} with ${response.records.length} transactions from ${response.total} to loan ${loan_id}`)
         return response;
     }
 
