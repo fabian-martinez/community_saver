@@ -6,6 +6,7 @@ import db from "./databaseConfig";
 import { initModels } from "./initModels";
 import logger from "../helpers/loggerService";
 import authenticate from "../middlewares/authGuard";
+import path from "path"
 
 class Server {
 
@@ -51,13 +52,16 @@ class Server {
 		this.app.use( express.json() )
 
 		//Public folder
-		this.app.use( express.static('public'))
+		this.app.use( express.static(path.join(__dirname, '../public')))
 
 	}
 	
 	routes() {
 		//Portected URLs
-		this.app.use(authenticate)
+		this.app.get(/^\/(?!api).*/, (req, res) => {
+			res.sendFile(path.join(__dirname, '../public', 'index.html'));
+		  });
+		this.app.use('/api', authenticate)
 		this.app.use(this.apiPath.members, membersRouter)
 		this.app.use(this.apiPath.loans, loansRouter)
 	}
