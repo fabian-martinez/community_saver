@@ -1,0 +1,34 @@
+name: Build and Publish Backend
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Frontend
+      run: npm run build
+
+    - name: Publish Release Artifacts
+      env: 
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        version=$(echo "${{ github.ref }}" | cut -d'/' -f 3)
+        mkdir -p release-artifacts/"${version}"
+        cp -r dist/* release-artifacts/"${version}"
+        
+        # Optionally, you can zip the artifacts
+        zip -r release-artifacts/"${version}".zip release-artifacts/"${version}"
+      
+        # Upload the artifacts as a release asset
+        gh release upload "${version}" release-artifacts/"${version}".zip
