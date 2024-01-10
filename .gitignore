@@ -235,4 +235,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,macos,windows,linux
-community-saver-firebase-firebase-adminsdk-byy4u-80f188d32a.json
+src/config/*.json

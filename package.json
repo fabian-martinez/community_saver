@@ -7,7 +7,9 @@
     "build": "tsc",
     "test": "ts-mocha --timeout 10000 test/*/*.test.ts",
     "e2e-test": "ts-mocha test/server.test.ts",
-    "clean": "rm -r dist/*"
+    "clean": "rm -r dist/*",
+    "start": "node server.js",
+    "dev-start": "ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",
