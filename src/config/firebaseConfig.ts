@@ -5,10 +5,10 @@ import path from 'path'
 
 dotenv.config()
 
-
 const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS || 'GOOGLE_APPLICATION_CREDENTIALS'
+const GOOGLE_APPLICATION_CREDENTIALS_PATH = process.env.GOOGLE_APPLICATION_CREDENTIALS_PATH || 'GOOGLE_APPLICATION_CREDENTIALS_PATH'
 
-const serviceAccount = require(path.join(__dirname,GOOGLE_APPLICATION_CREDENTIALS))
+const serviceAccount = require(path.join(GOOGLE_APPLICATION_CREDENTIALS_PATH,GOOGLE_APPLICATION_CREDENTIALS))
 
 const firebaseApp = initializeApp({
     credential: credential.cert(serviceAccount)
