@@ -1,8 +1,12 @@
+import dotenv from 'dotenv';
 import winston, { Logger, format } from 'winston';
 const { combine, timestamp, errors,  printf, } = format;
 
+dotenv.config()
+const LOGGING_LEVEL = process.env.LOGGING_LEVEL || 'info'
+
 const logger: Logger = winston.createLogger({
-  level: 'debug',
+  level: LOGGING_LEVEL.toLowerCase(),
   format: combine(
     timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     errors({ stack: true }),
