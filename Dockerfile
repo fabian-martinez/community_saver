@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # Copia los archivos de configuración del proyecto
 COPY package*.json ./
 
+# Copia los archivos estaticos del proyecto
+COPY  ./src/public /usr/src/app/public
+
 # Instala las dependencias y TypeScript
 RUN npm install --omit=dev
 
