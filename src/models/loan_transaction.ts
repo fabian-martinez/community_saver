@@ -5,18 +5,16 @@ interface LoanTransactionModel{
   id: number,
   loan_id: typeof DataTypes.UUID,
   date: number,
-  payment_amount: number,
-  interest_amount: number,
-  disbursement_amount: number,
+  amount: number,
+  type: string;
   last_balance: number,
 }
 class LoanTransaction extends Model implements LoanTransaction {
   public id!: number;
   public loan_id!: typeof DataTypes.UUID;
   public date!: number;
-  public payment_amount!: number;
-  public interest_amount!: number;
-  public disbursement_amount!: number;
+  public amount!: number;
+  public type!: string;
   public last_balance!: number;
   // Asociaciones
   static associate() {
@@ -44,16 +42,12 @@ function init(sequelize: Sequelize): void {
         type: DataTypes.DECIMAL(20, 2),
         defaultValue: DataTypes.NOW,
       },
-      payment_amount: {
+      amount: {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
-      interest_amount: {
-        type: DataTypes.DECIMAL(20, 2),
-        allowNull: false,
-      },
-      disbursement_amount: {
-        type: DataTypes.DECIMAL(20, 2),
+      type: {
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       last_balance: {

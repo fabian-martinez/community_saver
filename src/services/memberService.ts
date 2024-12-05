@@ -29,13 +29,13 @@ class MemberService {
         }
 
         const rowAndCount = await Member.findAndCountAll({
-            where:whereClause,
+            where: whereClause,
             limit: per_page,
             offset: (page - 1) * per_page
         })
 
         if (rowAndCount.rows.length === 0) {
-            throw new NotFoundError("Member Not Found")
+            throw new NotFoundError("Members Not Found")
         }
         
         const response = {

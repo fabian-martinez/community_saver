@@ -37,8 +37,10 @@ class Server {
 		try {
 			await db.authenticate();
 			initModels(db)
+			await db.sync();
 			logger.info("Database Online");
 		} catch (error) {
+			logger.error(error)
 			throw new Error('Database conection error')
 		}
 	}
