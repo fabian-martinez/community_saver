@@ -11,7 +11,7 @@ interface LoanModel{
   interest_rate: number;
   created_at: number;
   updated_at: number;
-  loan_type: string;
+  type: string;
   state: string;
 } 
 class Loan extends Model implements LoanModel {
@@ -23,7 +23,7 @@ class Loan extends Model implements LoanModel {
   public interest_rate!: number;
   public created_at!: number;
   public updated_at!: number;
-  public loan_type!: string;
+  public type!: string;
   public state!: string;
 
   // Asociaciones
@@ -39,7 +39,7 @@ function init(sequelize: Sequelize): void {
       id: {
         type: typeof DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: false,
       },
       member_id: {
         type: typeof DataTypes.UUID,
@@ -73,7 +73,7 @@ function init(sequelize: Sequelize): void {
         type: DataTypes.DECIMAL(20, 2),
         allowNull: false,
       },
-      loan_type: {
+      type: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
